@@ -1,94 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <title>Candlestick Chart</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Candlestick Chart</title>
+    <!-- Tambahkan Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+            body {
+              background-color: rgba(59, 43, 43, 0.141);
+            }
 
-  <!-- Tambahkan Plotly.js -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <style>
-    body {
-      background-color: rgba(59, 43, 43, 0.141);
-    }
+            .head_bar {
+              position: sticky;
+              top: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: black;
+              box-shadow: 0 5px 20px black;
+              color: white;
+              margin-bottom: 20px;
+            }
 
-    .head_bar {
-      position: sticky;
-      top: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: black;
-      box-shadow: 0 5px 20px black;
-      color: white;
-      margin-bottom: 20px;
-    }
+            .head_bar h1 {
+              font-weight: bold;
+              font-size: 21px;
+              margin-bottom: 32px;
+            }
 
-    .head_bar h1 {
-      font-weight: bold;
-      font-size: 21px;
-      margin-bottom: 32px;
-    }
+            #analisa {
+              width: 100%; /* Set 100% width for the analysis div */
+            }
 
-    #analisa {
-      width: 100%; /* Set 100% width for the analysis div */
-    }
+            .panel {
+              display: flex;
+              flex-direction: row;
+            }
 
-    .panel {
-      display: flex;
-      flex-direction: row;
-    }
+            #chart {
+              width: 50%; /* Set 50% width for the chart */
+              height: 400px;
+              width: 500px;
+            }
 
-    #chart {
-      width: 50%; /* Set 50% width for the chart */
-      height: 400px;
-      width: 500px;
-    }
+            #tomorrow {
+              width: 50%; /* Set 50% width for tomorrow */
+              height: 400px;
+              width: 500px;
+            }
 
-    #tomorrow {
-      width: 50%; /* Set 50% width for tomorrow */
-      height: 400px;
-      width: 500px;
-    
-    }
+            #simulasi {
+              flex: 1;
+              height: 1000px;
+            }
+      @media screen and (max-width: 1000px) {
+        .panel {
+          display: flex;
+          flex-direction: column;
+        }
+        #chart{
+          width: 100%;
+        }
+        #tomorrow{
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
 
-    #simulasi {
-      flex: 1;
-      height: 1000px;
-    }
-  </style>
-</head>
+  <body>
+    <header class="head_bar">
+      <h1>AWK Backtest App</h1>
+    </header>
+    <!-- Tambahkan elemen input tanggal -->
+    <label for="start-date">Start Date:</label>
+    <input type="date" id="start-date" name="start-date" />
 
-<body>
-  <header class="head_bar">
-    <h1>AWK Backtest App</h1>
-  </header>
-  <!-- Tambahkan elemen input tanggal -->
-  <label for="start-date">Start Date:</label>
-  <input type="date" id="start-date" name="start-date" />
+    <!-- Tambahkan tombol "Enter" -->
+    <button onclick="validateAndPlot()">Enter</button>
 
-  <!-- Tambahkan tombol "Enter" -->
-  <button onclick="validateAndPlot()">Enter</button>
+    <!-- Tambahkan elemen div untuk menampilkan analisa -->
+    <div id="analisa"></div>
 
-  <!-- Tambahkan elemen div untuk menampilkan analisa -->
-  <div id="analisa"></div>
-
-  <!-- Tambahkan elemen div untuk menampilkan chart dan tomorrow -->
-  <div class="panel">
-    <div id="chart"></div>
-    <div id="tomorrow"></div>
-    <div id="simulasi">
-      <p>asdasd</p>
+    <!-- Tambahkan elemen div untuk menampilkan chart dan tomorrow -->
+    <div class="panel">
+      <div id="chart"></div>
+      <div id="tomorrow"></div>
+      <div id="simulasi">
+        <p>asdasd</p>
+      </div>
     </div>
-  </div>
 
-  <div>
-    <p id="output"></p>
-  </div>
+    <div>
+      <p id="output"></p>
+    </div>
 
-  <script src="script.js"></script>
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>
