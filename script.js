@@ -18,8 +18,8 @@ function validateAndPlot() {
 
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
   if (isNaN(inputStartDate)) {
-  alert("Market Libur.");
-  return;
+    alert("Market Libur.");
+    return;
   }
 
   // Hitung start dan end date untuk hari ini
@@ -533,6 +533,14 @@ function validateAndPlot() {
                 }
               }
             }
+          }
+          var sixteen = new Date();
+          sixteen.setHours(18, 0, 0, 0); // Set the target time to 16:00:00
+          if (minute.getHours() >= sixteen.getHours()) {
+            simulasi(`JAM 18 SU`);
+            simulasi(minute);
+            console.log(`JAM 18 SU`);
+            break;
           }
 
         } else if (fibo23 <= first_next && first_next <= fibo0) {
