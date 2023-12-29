@@ -13,14 +13,14 @@ function validateAndPlot() {
   }
 
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
-  // var inputStartDate = new Date(document.getElementById("start-date").value);
-  var inputStartDate = "11-10-2021";
+  var inputStartDate = new Date(document.getElementById("start-date").value);
+  // var inputStartDate = "11-10-2021";
 
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
-  // if (isNaN(inputStartDate)) {
-  // alert("Market Libur.");
-  // return;
-  // }
+  if (isNaN(inputStartDate)) {
+    alert("Market Libur.");
+    return;
+  }
 
   // Hitung start dan end date untuk hari ini
   var startToday = new Date(inputStartDate);
@@ -890,4 +890,4 @@ function findHighest(data) {
 }
 
 // Panggil fungsi untuk memvalidasi dan menampilkan chart
-validateAndPlot();
+// validateAndPlot();
