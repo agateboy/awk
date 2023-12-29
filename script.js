@@ -22,7 +22,7 @@ function validateAndPlot() {
 
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
   var inputStartDate = new Date(document.getElementById("start-date").value);
-  // var inputStartDate = "11-22-2021";
+  // var inputStartDate = "11-29-2021";
 
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
   if (isNaN(inputStartDate)) {
@@ -1370,7 +1370,7 @@ function validateAndPlot() {
                   buy = false;
                   counter = counter + 1;
                   buy_stop = true;
-                  buystop = a2a;
+                  buystop = a1a;
                   stoploss = buystop;
                   sell_stop = false;
                 }
