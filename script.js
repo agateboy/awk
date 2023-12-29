@@ -1,4 +1,12 @@
 function validateAndPlot() {
+  document.getElementById("analisa").innerHTML = "";
+  document.getElementById("simulasi").innerHTML = "";
+  var keyPipInput = document.getElementById("keyPipInput");
+  var keypip = keyPipInput.value;
+  // Jika nilai input kosong, atur keyPip ke 1
+  if (keypip.trim() === "") {
+    keypip = 1.55;
+  }
   function addParagraphToAnalisa(text) {
     var analyzeDiv = document.getElementById("analisa");
     var paragraph = document.createElement("p");
@@ -370,7 +378,6 @@ function validateAndPlot() {
     var stop = false;
     var trail = 4;
     var counter = 0;
-    var keypip = 1.55;
     var sphread = 0.5;
     var buy = false;
     var sell = false;
