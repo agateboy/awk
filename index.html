@@ -12,62 +12,62 @@
     <!-- Tambahkan Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
-            body {
-              background-color: rgba(59, 43, 43, 0.141);
-            }
+      body {
+        background-color: rgba(59, 43, 43, 0.141);
+      }
 
-            .head_bar {
-              position: sticky;
-              top: 0;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              background-color: black;
-              box-shadow: 0 5px 20px black;
-              color: white;
-              margin-bottom: 20px;
-            }
+      .head_bar {
+        position: sticky;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+        box-shadow: 0 5px 20px black;
+        color: white;
+        margin-bottom: 20px;
+      }
 
-            .head_bar h1 {
-              font-weight: bold;
-              font-size: 21px;
-              margin-bottom: 32px;
-            }
+      .head_bar h1 {
+        font-weight: bold;
+        font-size: 21px;
+        margin-bottom: 32px;
+      }
 
-            #analisa {
-              width: 100%; /* Set 100% width for the analysis div */
-            }
+      #analisa {
+        width: 100%; /* Set 100% width for the analysis div */
+      }
 
-            .panel {
-              display: flex;
-              flex-direction: row;
-            }
+      .panel {
+        display: flex;
+        flex-direction: row;
+      }
 
-            #chart {
-              width: 50%; /* Set 50% width for the chart */
-              height: 400px;
-              width: 500px;
-            }
+      #chart {
+        width: 50%; /* Set 50% width for the chart */
+        height: 400px;
+        width: 500px;
+      }
 
-            #tomorrow {
-              width: 50%; /* Set 50% width for tomorrow */
-              height: 400px;
-              width: 500px;
-            }
+      #tomorrow {
+        width: 50%; /* Set 50% width for tomorrow */
+        height: 400px;
+        width: 500px;
+      }
 
-            #simulasi {
-              flex: 1;
-              height: 1000px;
-            }
+      #simulasi {
+        flex: 1;
+        height: 1000px;
+      }
       @media screen and (max-width: 768px) {
         .panel {
           display: flex;
           flex-direction: column;
         }
-        #chart{
+        #chart {
           width: 100%;
         }
-        #tomorrow{
+        #tomorrow {
           width: 100%;
         }
       }
@@ -92,9 +92,7 @@
     <div class="panel">
       <div id="chart"></div>
       <div id="tomorrow"></div>
-      <div id="simulasi">
-        <p>asdasd</p>
-      </div>
+      <div id="simulasi"></div>
     </div>
 
     <div>
