@@ -1209,7 +1209,7 @@ function validateAndPlot() {
         downtrend = true;
         if (fibo61 >= first_next && first_next >= fibo23) {
           // addParagraphToAnalisa(`OPEN A`);
-          selisihbep = parseFloat(fibo23 - fibo0).toFixed(2);
+          selisihbep = fibo23 - fibo0;
           tssell = parseFloat(fibo0 - selisihbep).toFixed(2);
           a1a = parseFloat(fibo50 + keypip + sphread).toFixed(2);
           a1atp = tsbuy - keypip;
@@ -1228,7 +1228,7 @@ function validateAndPlot() {
           a1btp5 = a1btp4 - trail;
           a1btp6 = a1btp5 - trail;
           selisihts = parseFloat(a1b - tssell).toFixed(2);
-          tsbuy = parseFloat(fibo100 + selisihbep).toFixed(2);
+          tsbuy = fibo100 + selisihbep;
           if (!stop_loss) {
             if (
               (open_value <= stoploss ||
@@ -1545,6 +1545,9 @@ function validateAndPlot() {
             simulasi(counter);
             simulasi(`buy ${a1a}`);
             simulasi(`sell ${a1b}`);
+            simulasi(`${tsbuy} ${a1a} ${a1b} ${tssell}`);
+            simulasi(tsbuy - a1a);
+            simulasi(a1b - tssell);
             if (buy_stop && !sell_stop) {
               hasil = parseFloat(sellstop - open_value).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
