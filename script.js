@@ -14,7 +14,7 @@ function validateAndPlot() {
 
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
   var inputStartDate = new Date(document.getElementById("start-date").value);
-  // var inputStartDate = "11-10-2021";
+  // var inputStartDate = "11-29-2021";
 
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
   if (isNaN(inputStartDate)) {
@@ -197,13 +197,13 @@ function validateAndPlot() {
       addParagraphToAnalisa(`UPTREND`);
       if (fibo61 <= first_next <= fibo23) {
         addParagraphToAnalisa(`OPEN A`);
-        console.log("OPEN A");
+        addParagraphToAnalisa("OPEN A");
       } else if (fibo23 <= first_next <= fibo0) {
         addParagraphToAnalisa(`OPEN B`);
-        console.log("OPEN B");
+        addParagraphToAnalisa("OPEN B");
       } else if (fibo100 <= first_next <= fibo61) {
         addParagraphToAnalisa(`OPEN C`);
-        console.log("OPEN C");
+        addParagraphToAnalisa("OPEN C");
       }
     } else {
       console.log("DOWNTREND");
@@ -470,6 +470,8 @@ function validateAndPlot() {
     var trailmode = false;
     var bep = false;
     var selisihbep = 0;
+    var selisihts = 0;
+    var tsbuy = 0;
     var tssell = 0;
     var tsbuy = 0;
     var enambelas = new Date();
@@ -853,12 +855,356 @@ function validateAndPlot() {
           console.log("OPEN C");
         }
       } else {
-        console.log("DOWNTREND");
-        addParagraphToAnalisa(`DOWNTREND`);
         downtrend = true;
         if (fibo61 >= first_next && first_next >= fibo23) {
-          addParagraphToAnalisa(`OPEN A`);
-          console.log("OPEN A");
+          // addParagraphToAnalisa(`OPEN A`);
+          selisihbep = parseFloat(fibo23 - fibo0).toFixed(2);
+          tssell = parseFloat(fibo0 - selisihbep).toFixed(2);
+          a1a = parseFloat(fibo50 + keypip + sphread).toFixed(2);
+          a1atp = tsbuy - keypip;
+          a1atp1 = a1atp + trail;
+          a1atp2 = a1atp1 + trail;
+          a1atp3 = a1atp2 + trail;
+          a1atp4 = a1atp3 + trail;
+          a1atp5 = a1atp4 + trail;
+          a1atp6 = a1atp5 + trail;
+          a1b = parseFloat(fibo50 - keypip).toFixed(2);
+          a1btp = tssell + keypip + sphread;
+          a1btp1 = a1btp - trail;
+          a1btp2 = a1btp1 - trail;
+          a1btp3 = a1btp2 - trail;
+          a1btp4 = a1btp3 - trail;
+          a1btp5 = a1btp4 - trail;
+          a1btp6 = a1btp5 - trail;
+          selisihts = parseFloat(a1b - tssell).toFixed(2);
+          tsbuy = parseFloat(fibo100 + selisihbep).toFixed(2);
+          if (!stop_loss) {
+            if (
+              (open_value <= stoploss ||
+                low_value <= stoploss ||
+                high_value <= stoploss) &&
+              buy
+            ) {
+              if (counter < 4) {
+                if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
+                  stop_loss = true;
+                  simulasi(`TRAIL STOP : ${stoploss}`);
+                  sell_stop = false;
+                  buy_stop = false;
+                  hasil = parseFloat(stoploss - buystop).toFixed(2);
+                  simulasi(hasil);
+                } else if (minute.getHours() >= enambelas.getHours()) {
+                  stop_loss = true;
+                  simulasi(`STOP LOSS : ${stoploss}`);
+                  buy_stop = true;
+                  sell_stop = true;
+                  hasil = parseFloat(stoploss - buystop).toFixed(2);
+                  simulasi(hasil);
+                  simulasi(counter);
+                } else if (
+                  bep &&
+                  (!tp1b || !tp2b || !tp3b || !tp4b || !tp5b || !tp6b)
+                ) {
+                  stop_loss = true;
+                  simulasi(`BEP AT : ${stoploss}`);
+                  sell_stop = true;
+                  buy_stop = true;
+                  bep = false;
+                } else {
+                  stop_loss = true;
+                  simulasi(`STOP LOSS : ${stoploss}`);
+                  sell_stop = true;
+                  buy_stop = true;
+                  hasil = parseFloat(stoploss - buystop).toFixed(2);
+                  simulasi(hasil);
+                }
+              } else if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
+                stop_loss = true;
+                simulasi(`TRAIL STOP : ${stoploss}`);
+                hasil = parseFloat(stoploss - buystop).toFixed(2);
+                simulasi(hasil);
+                simulasi(counter);
+                break;
+              } else {
+                stop_loss = true;
+                simulasi(`STOP LOSS : ${stoploss}`);
+                hasil = parseFloat(stoploss - buystop).toFixed(2);
+                simulasi(hasil);
+                simulasi(counter);
+                break;
+              }
+            }
+            if (
+              (open_value >= stoploss ||
+                low_value >= stoploss ||
+                high_value >= stoploss) &&
+              sell
+            ) {
+              if (counter < 4) {
+                if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
+                  stop_loss = true;
+                  simlasi(`TRAIL STOP : ${stoploss}`);
+                  sell_stop = false;
+                  buy_stop = false;
+                  hasil = parseFloat(sellstop - stoploss);
+                  simulasi(hasil);
+                } else if (minute.getHours() >= enambelas.getHours()) {
+                  stop_loss = true;
+                  simulasi(`STOP LOSS : ${stoploss}`);
+                  buy_stop = true;
+                  sell_stop = true;
+                  hasil = parseFloat(sellstop - stoploss).toFixed(2);
+                  simulasi(hasil);
+                  simulasi(counter);
+                } else if (
+                  bep &&
+                  (!tp1s || !tp2s || !tp3s || !tp4s || !tp5s || !tp6s)
+                ) {
+                  stop_loss = true;
+                  simulasi(`BEP AT : ${stoploss}`);
+                  sell_stop = true;
+                  buy_stop = true;
+                  bep = false;
+                } else {
+                  stop_loss = true;
+                  simulasi(`STOP LOSS : ${stoploss}`);
+                  sell_stop = true;
+                  buy_stop = true;
+                  hasil = parseFloat(sellstop - stoploss).toFixed(2);
+                  simulasi(hasil);
+                }
+              } else if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
+                stop_loss = true;
+                simulasi(`TRAIL STOP : ${stoploss}`);
+                hasil = parseFloat(sellstop - stoploss).toFixed(2);
+                simulasi(hasil);
+                simulasi(counter);
+              } else {
+                stop_loss = true;
+                hasil = parseFloat(sellstop - stoploss).toFixed(2);
+                simulasi(hasil);
+                simulasi(counter);
+                break;
+              }
+            }
+          }
+          if (
+            (a1a >= open_value && open_value >= a1b) ||
+            (a1a >= high_value && high_value >= a1b) ||
+            (a1a >= low_value && low_value >= a1b)
+          ) {
+            if (!setopen) {
+              sellstop = a1b;
+              console.log(`SELL STOP : ${sellstop}`);
+              simulasi(`SELL STOP : ${sellstop}`);
+              sell_stop = true;
+              buystop = a1a;
+              console.log(`BUY STOP : ${buystop}`);
+              simulasi(`BUY STOP : ${buystop}`);
+              buy_stop = true;
+              setopen = true;
+            } else if (setopen) {
+              if (open_value <= a1b || low_value <= a1b || high_value <= a1b) {
+                if (counter >= 4) {
+                  buy_stop = false;
+                  sell_stop = false;
+                } else if (minute.getHours() >= enambelas.getHours()) {
+                  buy_stop = false;
+                  sell_stop = false;
+                } else if (sell_stop && !sell) {
+                  stop_loss = false;
+                  console.log(`SELL STOP AT : ${sellstop}`);
+                  simulasi(`SELL STOP AT : ${sellstop} in ${minute}`);
+                  sell = true;
+                  buy = false;
+                  counter = counter + 1;
+                  buy_stop = true;
+                  buystop = a2a;
+                  stoploss = buystop;
+                  sell_stop = false;
+                }
+              } else if (
+                open_value >= a1a ||
+                low_value >= a1a ||
+                high_value >= a1a
+              ) {
+                if (counter >= 4) {
+                  buy_stop = false;
+                  sell_stop = false;
+                } else if (minute.getHours() >= enambelas.getHours()) {
+                  buy_stop = false;
+                  sell_stop = false;
+                } else if (buy_stop && !buy) {
+                  stop_loss = false;
+                  console.log(`BUY STOP AT : ${buystop}`);
+                  simulasi(`BUY STOP AT : ${buystop} in ${minute}`);
+                  buy = true;
+                  sell = false;
+                  counter = counter + 1;
+                  buy_stop = false;
+                  sellstop = a1b;
+                  stoploss = sellstop;
+                  sell_stop = true;
+                }
+              }
+              if (buy) {
+                if (
+                  open_value >= tsbuy ||
+                  low_value >= tsbuy ||
+                  high_value >= tsbuy
+                ) {
+                  if (
+                    open_value >= a1atp6 ||
+                    low_value >= a1atp6 ||
+                    high_value >= a1atp6
+                  ) {
+                    tp7b = true;
+                  } else if (
+                    open_value >= a1atp5 ||
+                    low_value >= a1atp5 ||
+                    high_value >= a1atp5
+                  ) {
+                    tp6b = true;
+                  } else if (
+                    open_value >= a1atp4 ||
+                    low_value >= a1atp4 ||
+                    high_value >= a1atp4
+                  ) {
+                    tp5b = true;
+                  } else if (
+                    open_value >= a1atp3 ||
+                    low_value >= a1atp3 ||
+                    high_value >= a1atp3
+                  ) {
+                    tp4b = true;
+                  } else if (
+                    open_value >= a1atp2 ||
+                    low_value >= a1atp2 ||
+                    high_value >= a1atp2
+                  ) {
+                    tp3b = true;
+                  } else if (
+                    open_value >= a1atp1 ||
+                    low_value >= a1atp1 ||
+                    high_value >= a1atp1
+                  ) {
+                    tp2b = true;
+                  } else if (
+                    open_value >= a1atp ||
+                    low_value >= a1atp ||
+                    high_value >= a1atp
+                  ) {
+                    tp1b = true;
+                  }
+                  if (tp7b) {
+                    stoploss = a1atp5;
+                  } else if (tp6b) {
+                    stoploss = a1atp4;
+                  } else if (tp5b) {
+                    stoploss = a1atp3;
+                  } else if (tp4b) {
+                    stoploss = a1atp2;
+                  } else if (tp3b) {
+                    stoploss = a1atp1;
+                  } else if (tp2b) {
+                    stoploss = a1atp;
+                  } else if (tp1b) {
+                    stoploss = a1atp;
+                  }
+                }
+                if (
+                  (open_value >= fibo0 ||
+                    low_value >= fibo0 ||
+                    high_value >= fibo0) &&
+                  !bep
+                ) {
+                  bep = true;
+                  stoploss = buystop;
+                }
+              } else if (sell) {
+                if (
+                  open_value <= tssell ||
+                  low_value <= tssell ||
+                  high_value <= tssell
+                ) {
+                  if (
+                    open_value <= a1btp6 ||
+                    low_value <= a1atp6 ||
+                    high_value <= a1atp6
+                  ) {
+                    tp7s = true;
+                  } else if (
+                    open_value <= a1btp5 ||
+                    low_value <= a1atp5 ||
+                    high_value <= a1atp5
+                  ) {
+                    tp6s = true;
+                  } else if (
+                    open_value <= a1btp4 ||
+                    low_value <= a1atp4 ||
+                    high_value <= a1atp4
+                  ) {
+                    tp5s = true;
+                  } else if (
+                    open_value <= a1btp3 ||
+                    low_value <= a1atp3 ||
+                    high_value <= a1atp3
+                  ) {
+                    tp4s = true;
+                  } else if (
+                    open_value <= a1btp2 ||
+                    low_value <= a1atp2 ||
+                    high_value <= a1atp2
+                  ) {
+                    tp3s = true;
+                  } else if (
+                    open_value <= a1btp1 ||
+                    low_value <= a1atp1 ||
+                    high_value <= a1atp1
+                  ) {
+                    tp2s = true;
+                  } else if (
+                    open_value <= a1btp ||
+                    low_value <= a1atp ||
+                    high_value <= a1atp
+                  ) {
+                    tp1s = true;
+                  }
+                  if (tp7s) {
+                    stoploss = a1btp5;
+                  } else if (tp6s) {
+                    stoploss = a1btp4;
+                  } else if (tp5s) {
+                    stoploss = a1btp3;
+                  } else if (tp4s) {
+                    stoploss = a1btp2;
+                  } else if (tp3s) {
+                    stoploss = a1btp1;
+                  } else if (tp2s) {
+                    stoploss = a1btp;
+                  } else if (tp1s) {
+                    stoploss = a1btp;
+                  }
+                }
+              }
+            }
+          }
+          if (minute.getHours() >= sixteen.getHours()) {
+            simulasi(`OPEN : ${open_value}`);
+            simulasi(counter);
+            simulasi(`buy ${a1a}`);
+            simulasi(`sell ${a1b}`);
+            if (buy_stop && !sell_stop) {
+              hasil = parseFloat(sellstop - open_value).toFixed(2);
+              simulasi(`Close Jam 11 ${hasil}`);
+              break;
+            } else if (sell_stop && !buy_stop) {
+              hasil = parseFloat(open_value - buystop).toFixed(2);
+              simulasi(`Close Jam 11 ${hasil}`);
+              break;
+            }
+            break;
+          }
         } else if (fibo23 >= first_next && first_next >= fibo0) {
           addParagraphToAnalisa(`OPEN B`);
           console.log("OPEN B");
