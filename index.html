@@ -57,7 +57,11 @@
 
       #simulasi {
         flex: 1;
-        height: 1000px;
+        height: 500px;
+      }
+      #tabel td,
+      th {
+        border: solid 1px black;
       }
       @media screen and (max-width: 768px) {
         .panel {
@@ -96,9 +100,8 @@
       <div id="simulasi"></div>
     </div>
 
-    <div>
-      <p id="output"></p>
-    </div>
+    <div id="tabel"></div>
+    <button onclick="saveToCSV()">Save as CSV</button>
 
     <script src="script.js"></script>
   </body>
