@@ -33,7 +33,10 @@
         font-size: 21px;
         margin-bottom: 32px;
       }
-
+      .analisis {
+        display: flex;
+        flex-direction: row;
+      }
       #analisa {
         width: 100%; /* Set 100% width for the analysis div */
       }
@@ -42,7 +45,12 @@
         display: flex;
         flex-direction: row;
       }
-
+      #tabel {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: left;
+      }
       #chart {
         width: 50%; /* Set 50% width for the chart */
         height: 400px;
@@ -74,6 +82,10 @@
         #tomorrow {
           width: 100%;
         }
+        .analisis {
+          display: flex;
+          flex-direction: row;
+        }
       }
     </style>
   </head>
@@ -85,13 +97,19 @@
     <!-- Tambahkan elemen input tanggal -->
     <label for="start-date">Start Date:</label>
     <input type="date" id="start-date" name="start-date" />
+    <label for="start-date">End Date:</label>
+    <input type="date" id="end-date" name="end-date" />
     <!-- Tambahkan tombol "Enter" -->
     <label for="keyPipInput">Key Pip:</label>
     <input type="text" id="keyPipInput" placeholder="Keypip (auto = 1.55)" />
-    <button onclick="validateAndPlot()">Enter</button>
+    <button onclick="dateLoop()">Enter</button>
 
     <!-- Tambahkan elemen div untuk menampilkan analisa -->
-    <div id="analisa"></div>
+    <button onclick="togglePanel()">Panel Visibility</button>
+
+    <div class="analisis">
+      <div id="analisa"></div>
+    </div>
 
     <!-- Tambahkan elemen div untuk menampilkan chart dan tomorrow -->
     <div class="panel">

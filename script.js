@@ -192,65 +192,90 @@ function updateTable(
         <td>${risk}%</td>
       `;
 }
-function validateAndPlot() {
-  document.getElementById("analisa").innerHTML = "";
-  document.getElementById("simulasi").innerHTML = "";
-  var keyPipInput = document.getElementById("keyPipInput");
-  var keypip = keyPipInput.value;
-  // Jika nilai input kosong, atur keyPip ke 1
-  if (keypip.trim() === "") {
-    keypip = 1.55;
-  }
-  function addParagraphToAnalisa(text) {
-    var analyzeDiv = document.getElementById("analisa");
-    var paragraph = document.createElement("p");
-    paragraph.textContent = text;
-    analyzeDiv.appendChild(paragraph);
-  }
-  function simulasi(text) {
-    var analyzeDiv = document.getElementById("simulasi");
-    var paragraph = document.createElement("p");
-    paragraph.textContent = text;
-    analyzeDiv.appendChild(paragraph);
-  }
-  // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
+async function dateLoop() {
   var inputStartDate = new Date(document.getElementById("start-date").value);
-  // var inputStartDate = "11-01-2021";
-  // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
+  var inputEndDate = new Date(document.getElementById("end-date").value);
 
   if (isNaN(inputStartDate)) {
     alert("Market Libur.");
     return;
   }
 
-  // Hitung start dan end date untuk hari ini
   var startToday = new Date(inputStartDate);
-  startToday.setHours(1, 0, 0, 0); // Set jam 01:00:00
-  var endToday = new Date(startToday);
-  endToday.setHours(23, 59, 59, 999); // Set jam 01:00:00
+  var FinishDate = new Date(inputEndDate);
+  // startToday.setDate(startToday.getDate() - 1);
 
-  // Ubah bagian ini
-  var endTomorrow = new Date(startToday);
-  endTomorrow.setDate(endTomorrow.getDate() + 1);
-  var startTomorrow = new Date(startToday);
-  startTomorrow.setDate(startTomorrow.getDate() + 1);
-  startTomorrow.setHours(1, 0, 0, 0);
-  endTomorrow.setHours(23, 59, 59, 999); // Set jam 23:59:59:999
+  var keyPipInput = document.getElementById("keyPipInput");
+  var keypip = keyPipInput.value;
 
-  // Periksa apakah "endTomorrow" dan "endDayAfterTomorrow" tidak terdefinisi atau kosong
-  if (!endTomorrow || isNaN(endTomorrow)) {
-    // Jika kosong, atur "endTomorrow" menjadi "today + 2"
-    endTomorrow = new Date(startToday);
-    endTomorrow.setDate(endTomorrow.getDate() + 3);
-    endTomorrow.setHours(23, 59, 59, 999); // Set jam 23:59:59:999
-    if (!endTomorrow || isNaN(endTomorrow)) {
-      // Jika kosong, atur "endTomorrow" menjadi "today + 2"
-      endTomorrow = new Date(startToday);
-      endTomorrow.setDate(endTomorrow.getDate() + 4);
-      endTomorrow.setHours(23, 59, 59, 999); // Set jam 23:59:59:999
-    }
+  // Jika nilai input kosong, atur keyPip ke 1
+  if (keypip.trim() === "") {
+    keypip = 1.55;
   }
 
+  for (
+    var currentDate = new Date(startToday);
+    currentDate.getTime() <= FinishDate.getTime();
+    currentDate.setDate(currentDate.getDate() + 1)
+  ) {
+    if (startToday.getDate() === FinishDate.getDate()) {
+      console.log("stop");
+      break;
+    }
+    console.log(startToday);
+    if (!startToday || isNaN(startToday)) {
+      // Jika kosong, atur "endTomorrow" menjadi "today + 2"
+      startToday = new Date(startToday);
+      startToday.setDate(startToday.getDate() + 3);
+    }
+    startToday.setHours(1, 0, 0, 0); // Set jam 01:00:00
+    var endToday = new Date(startToday);
+    endToday.setHours(23, 59, 59, 999); // Set jam 01:00:00
+    var endTomorrow = new Date(startToday);
+    endTomorrow.setDate(endTomorrow.getDate() + 1);
+    var startTomorrow = new Date(startToday);
+    startTomorrow.setDate(startTomorrow.getDate() + 1);
+    startTomorrow.setHours(1, 0, 0, 0);
+    endTomorrow.setHours(23, 59, 59, 999);
+    if (!endTomorrow || isNaN(endTomorrow)) {
+      endTomorrow = new Date(startToday);
+      endTomorrow.setDate(endTomorrow.getDate() + 3);
+      startTomorrow.setHours(1, 0, 0, 0);
+      endTomorrow.setHours(23, 59, 59, 999);
+      if (!endTomorrow || isNaN(endTomorrow)) {
+        endTomorrow = new Date(startToday);
+        endTomorrow.setDate(endTomorrow.getDate() + 4);
+        startTomorrow.setHours(1, 0, 0, 0);
+        endTomorrow.setHours(23, 59, 59, 999);
+      }
+    }
+    validateAndPlot(startToday, startTomorrow, endToday, endTomorrow, keypip);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    startToday.setDate(startToday.getDate() + 1);
+  }
+}
+function validateAndPlot(
+  startToday,
+  startTomorrow,
+  endToday,
+  endTomorrow,
+  keypip
+) {
+  document.getElementById("analisa").innerHTML = "";
+  document.getElementById("simulasi").innerHTML = "";
+  function addParagraphToAnalisa(text) {
+    var analyzeDiv = document.getElementById("analisa");
+    var paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    analyzeDiv.appendChild(paragraph);
+  }
+
+  function simulasi(text) {
+    var analyzeDiv = document.getElementById("simulasi");
+    var paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    analyzeDiv.appendChild(paragraph);
+  }
   // Ambil data dari CSV
   Plotly.d3.csv("2021f.csv", function (data) {
     // Konversi tanggal ke format yang benar
@@ -688,9 +713,10 @@ function validateAndPlot() {
       var low_value = parseFloat(tomorrowsimulation[i].Low).toFixed(2);
       var high_value = parseFloat(tomorrowsimulation[i].High).toFixed(2); // Fixed: changed to High instead of Low
 
-      console.log(
-        `Minute: ${minute}, Open: ${open_value}, High: ${high_value}, Low: ${low_value}`
-      );
+      console
+        .log
+        // `Minute: ${minute}, Open: ${open_value}, High: ${high_value}, Low: ${low_value}`
+        ();
 
       if (counter == 4) {
         stop = true;
@@ -1536,30 +1562,21 @@ function validateAndPlot() {
             simulasi(`buy ${buystop}`);
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
-            if (!buy && sell && !bep) {
+            if (buy_stop && !sell_stop) {
               hasil = parseFloat(sellstop - open_value).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
               var closesetup = "Jam 11";
-              // break;
-            } else if (!sell && buy && !bep) {
+              break;
+            } else if (sell_stop && !buy_stop) {
               hasil = parseFloat(open_value - buystop).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
               var closesetup = "Jam 11";
-              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
-              var closeprice = stoploss;
-              var closepip = hasil;
-              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
-              // break;
-            } else if (bep) {
-              hasil = parseFloat(open_value - buystop).toFixed(2);
-              simulasi(`Close Jam 11 ${hasil}`);
-              var closesetup = "Jam 11";
-              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
-              var closeprice = stoploss;
-              var closepip = hasil;
-              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              break;
             }
-            //
+            var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+            var closeprice = stoploss;
+            var closepip = hasil;
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
             updateTable(
               counter,
               minute,
@@ -3306,7 +3323,6 @@ function validateAndPlot() {
   });
   tablecounter++;
 }
-
 // Fungsi untuk mencari nilai terendah pada kolom "Low"
 function findLowest(data) {
   var lowest = Number.MAX_VALUE;
@@ -3324,5 +3340,11 @@ function findHighest(data) {
   });
   return highest;
 }
-
+function togglePanel() {
+  var panel = document.querySelector(".panel");
+  var analisabox = document.querySelector(".analisis");
+  panel.style.display = panel.style.display === "none" ? "flex" : "none";
+  analisabox.style.display =
+    analisabox.style.display === "none" ? "flex" : "none";
+}
 // validateAndPlot();
