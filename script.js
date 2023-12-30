@@ -1092,6 +1092,15 @@ function validateAndPlot() {
                     stoploss = a2btp;
                   }
                 }
+                if (
+                  (open_value >= fibo100 ||
+                    low_value >= fibo100 ||
+                    high_value >= fibo100) &&
+                  !bep
+                ) {
+                  bep = true;
+                  stoploss = sellstop;
+                }
               }
             }
           }
@@ -1450,7 +1459,7 @@ function validateAndPlot() {
               high_value <= fibo61
             ) {
               bep = true;
-              stoploss = buystop;
+              stoploss = sellstop;
             }
           } else if (buy) {
             if (
@@ -1892,9 +1901,9 @@ function validateAndPlot() {
                   }
                 }
                 if (
-                  (open_value >= fibo0 ||
-                    low_value >= fibo0 ||
-                    high_value >= fibo0) &&
+                  (open_value >= fibo100 ||
+                    low_value >= fibo100 ||
+                    high_value >= fibo100) &&
                   !bep
                 ) {
                   bep = true;
@@ -1964,6 +1973,15 @@ function validateAndPlot() {
                   } else if (tp1s) {
                     stoploss = a1btp;
                   }
+                }
+                if (
+                  (open_value >= fibo0 ||
+                    low_value >= fibo0 ||
+                    high_value >= fibo0) &&
+                  !bep
+                ) {
+                  bep = true;
+                  stoploss = sellstop;
                 }
               }
             }
@@ -2264,9 +2282,9 @@ function validateAndPlot() {
           }
           if (sell) {
             if (
-              open_value <= fibo100 ||
-              low_value <= fibo100 ||
-              high_value <= fibo100
+              open_value <= tssell ||
+              low_value <= tssell ||
+              high_value <= tssell
             ) {
               if (open_value <= ts6 || low_value <= ts6 || high_value <= ts6) {
                 tp7s = true;
@@ -2328,7 +2346,7 @@ function validateAndPlot() {
               high_value <= bepsell
             ) {
               bep = true;
-              stoploss = buystop;
+              stoploss = sellstop;
             }
           } else if (buy) {
             if (
