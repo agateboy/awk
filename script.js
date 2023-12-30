@@ -73,7 +73,7 @@
 //         <td>${risk}%</td>
 //       `;
 // }
-var tablecounter = 1; // Variable untuk menyimpan nilai counter tabel
+var tablecounter = 0; // Variable untuk menyimpan nilai counter tabel
 
 function updateTable(
   counter,
@@ -175,14 +175,14 @@ function validateAndPlot() {
     analyzeDiv.appendChild(paragraph);
   }
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
-  // var inputStartDate = new Date(document.getElementById("start-date").value);
-  var inputStartDate = "11-01-2021";
+  var inputStartDate = new Date(document.getElementById("start-date").value);
+  // var inputStartDate = "11-01-2021";
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
 
-  // if (isNaN(inputStartDate)) {
-  // alert("Market Libur.");
-  // return;
-  // }
+  if (isNaN(inputStartDate)) {
+    alert("Market Libur.");
+    return;
+  }
 
   // Hitung start dan end date untuk hari ini
   var startToday = new Date(inputStartDate);
@@ -2420,4 +2420,4 @@ function findHighest(data) {
   return highest;
 }
 
-validateAndPlot();
+// validateAndPlot();
