@@ -1,3 +1,43 @@
+function saveToCSV() {
+  var csvContent = "";
+
+  // Ambil semua tabel
+  var tables = document.querySelectorAll("table");
+
+  tables.forEach(function (table) {
+    // Ambil semua baris dalam tbody
+    var rows = table.querySelectorAll("tbody tr");
+
+    rows.forEach(function (row) {
+      var rowData = [];
+
+      // Ambil semua sel dalam baris
+      var cells = row.querySelectorAll("td");
+
+      cells.forEach(function (cell) {
+        rowData.push(cell.textContent);
+      });
+
+      // Gabungkan data menjadi baris CSV
+      csvContent += rowData.join(",") + "\n";
+    });
+  });
+
+  // Buat objek Blob dan tautan unduhan
+  var blob = new Blob([csvContent], { type: "text/csv" });
+  var url = URL.createObjectURL(blob);
+
+  // Tautan unduhan
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "table_data.csv";
+  document.body.appendChild(a);
+  a.click();
+
+  // Hapus tautan setelah diunduh
+  document.body.removeChild(a);
+}
+
 // function updateTable(
 //   counter,
 //   minute,
@@ -73,7 +113,7 @@
 //         <td>${risk}%</td>
 //       `;
 // }
-var tablecounter = 0; // Variable untuk menyimpan nilai counter tabel
+var tablecounter = 1; // Variable untuk menyimpan nilai counter tabel
 
 function updateTable(
   counter,
@@ -153,7 +193,6 @@ function updateTable(
       `;
 }
 function validateAndPlot() {
-  tablecounter++;
   document.getElementById("analisa").innerHTML = "";
   document.getElementById("simulasi").innerHTML = "";
   var keyPipInput = document.getElementById("keyPipInput");
@@ -685,6 +724,7 @@ function validateAndPlot() {
           a2btp4 = a2btp3 - trail;
           a2btp5 = a2btp4 - trail;
           a2btp6 = a2btp5 - trail;
+          tsbuy = fibo0 - selisihbep;
           console.log(`a2a : ${a2a}`);
           console.log(`a2b : ${a2b}`);
           if (!stop_loss) {
@@ -1072,7 +1112,7 @@ function validateAndPlot() {
             var hasilpip = parseFloat(entry - stoploss).toFixed(2);
             var closeprice = stoploss;
             var closepip = hasil;
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
             updateTable(
               counter,
               minute,
@@ -1487,21 +1527,30 @@ function validateAndPlot() {
             simulasi(`buy ${buystop}`);
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
-            if (!buy && sell) {
+            if (!buy && sell && !bep) {
               hasil = parseFloat(sellstop - open_value).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
               var closesetup = "Jam 11";
               // break;
-            } else if (!sell && buy) {
+            } else if (!sell && buy && !bep) {
               hasil = parseFloat(open_value - buystop).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
               var closesetup = "Jam 11";
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
               // break;
+            } else if (bep) {
+              hasil = parseFloat(open_value - buystop).toFixed(2);
+              simulasi(`Close Jam 11 ${hasil}`);
+              var closesetup = "Jam 11";
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
             }
-            var hasilpip = parseFloat(entry - stoploss).toFixed(2);
-            var closeprice = stoploss;
-            var closepip = hasil;
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            //
             updateTable(
               counter,
               minute,
@@ -2400,6 +2449,7 @@ function validateAndPlot() {
       }
     }
   });
+  tablecounter++;
 }
 
 // Fungsi untuk mencari nilai terendah pada kolom "Low"
