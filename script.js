@@ -1,4 +1,159 @@
+// function updateTable(
+//   counter,
+//   minute,
+//   highestHigh,
+//   lowestLow,
+//   trend,
+//   setup,
+//   order,
+//   entry,
+//   stoploss,
+//   hasilpip,
+//   closesetup,
+//   closeprice,
+//   closepip,
+//   risk
+// ) {
+//   var table = document.getElementById("tabel");
+
+//   // Jika belum ada tabel, buat tabel baru
+//   if (!table.querySelector("table")) {
+//     var newTable = document.createElement("table");
+//     newTable.innerHTML = `
+//           <thead>
+//             <tr>
+//               <th>Counter</th>
+//               <th>Date</th>
+//               <th>High</th>
+//               <th>Low</th>
+//               <th>Trend</th>
+//               <th>Setup</th>
+//               <th>Order</th>
+//               <th>Entry</th>
+//               <th>Stoploss</th>
+//               <th>pip</th>
+//               <th>Close Setup</th>
+//               <th>Close Price</th>
+//               <th>Close Pip</th>
+//               <th>Risk</th>
+//             </tr>
+//           </thead>
+//           <tbody></tbody>
+//         `;
+//     table.appendChild(newTable);
+//   }
+
+//   // Ambil referensi tbody
+//   var tbody = table.querySelector("tbody");
+
+//   // Buat atau update baris sesuai dengan counter
+//   var row = tbody.querySelector(`tr[data-counter="${counter}"]`);
+//   if (!row) {
+//     // Jika baris belum ada, buat baris baru
+//     row = document.createElement("tr");
+//     row.setAttribute("data-counter", counter);
+//     tbody.appendChild(row);
+//   }
+
+//   // Perbarui atau tambahkan nilai ke kolom-kolom tabel
+//   row.innerHTML = `
+//         <td>${counter}</td>
+//         <td>${minute}</td>
+//         <td>${highestHigh}</td>
+//         <td>${lowestLow}</td>
+//         <td>${trend}</td>
+//         <td>${setup}</td>
+//         <td>${order}</td>
+//         <td>${entry}</td>
+//         <td>${stoploss}</td>
+//         <td>${hasilpip}</td>
+//         <td>${closesetup}</td>
+//         <td>${closeprice}</td>
+//         <td>${closepip}</td>
+//         <td>${risk}%</td>
+//       `;
+// }
+var tablecounter = 1; // Variable untuk menyimpan nilai counter tabel
+
+function updateTable(
+  counter,
+  minute,
+  highestHigh,
+  lowestLow,
+  trend,
+  setup,
+  order,
+  entry,
+  stoploss,
+  hasilpip,
+  closesetup,
+  closeprice,
+  closepip,
+  risk
+) {
+  var tableId = "tabel" + tablecounter;
+  var table = document.getElementById(tableId);
+
+  // Jika belum ada tabel, buat tabel baru
+  if (!table) {
+    var newTable = document.createElement("table");
+    newTable.innerHTML = `
+          <thead>
+            <tr>
+              <th>Counter</th>
+              <th>Date</th>
+              <th>High</th>
+              <th>Low</th>
+              <th>Trend</th>
+              <th>Setup</th>
+              <th>Order</th>
+              <th>Entry</th>
+              <th>Stoploss</th>
+              <th>pip</th>
+              <th>Close Setup</th>
+              <th>Close Price</th>
+              <th>Close Pip</th>
+              <th>Risk</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+    newTable.setAttribute("id", tableId);
+    document.getElementById("tabel").appendChild(newTable);
+  }
+
+  // Ambil referensi tbody
+  var tbody = document.getElementById(tableId).querySelector("tbody");
+
+  // Buat atau update baris sesuai dengan counter
+  var row = tbody.querySelector(`tr[data-counter="${counter}"]`);
+  if (!row) {
+    // Jika baris belum ada, buat baris baru
+    row = document.createElement("tr");
+    row.setAttribute("data-counter", counter);
+    tbody.appendChild(row);
+  }
+
+  // Perbarui atau tambahkan nilai ke kolom-kolom tabel
+  row.innerHTML = `
+        <td>${counter}</td>
+        <td>${minute}</td>
+        <td>${highestHigh}</td>
+        <td>${lowestLow}</td>
+        <td>${trend}</td>
+        <td>${setup}</td>
+        <td>${order}</td>
+        <td>${entry}</td>
+        <td>${stoploss}</td>
+        <td>${hasilpip}</td>
+        <td>${closesetup}</td>
+        <td>${closeprice}</td>
+        <td>${closepip}</td>
+        <td>${risk}%</td>
+      `;
+}
 function validateAndPlot() {
+  tablecounter++;
   document.getElementById("analisa").innerHTML = "";
   document.getElementById("simulasi").innerHTML = "";
   var keyPipInput = document.getElementById("keyPipInput");
@@ -19,16 +174,15 @@ function validateAndPlot() {
     paragraph.textContent = text;
     analyzeDiv.appendChild(paragraph);
   }
-
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
-  var inputStartDate = new Date(document.getElementById("start-date").value);
-  // var inputStartDate = "11-29-2021";
-
+  // var inputStartDate = new Date(document.getElementById("start-date").value);
+  var inputStartDate = "11-01-2021";
   // VMATIKAN COMMAND UNTUK INPUT LEWAT WEBAPP
-  if (isNaN(inputStartDate)) {
-    alert("Market Libur.");
-    return;
-  }
+
+  // if (isNaN(inputStartDate)) {
+  // alert("Market Libur.");
+  // return;
+  // }
 
   // Hitung start dan end date untuk hari ini
   var startToday = new Date(inputStartDate);
@@ -50,6 +204,12 @@ function validateAndPlot() {
     endTomorrow = new Date(startToday);
     endTomorrow.setDate(endTomorrow.getDate() + 3);
     endTomorrow.setHours(23, 59, 59, 999); // Set jam 23:59:59:999
+    if (!endTomorrow || isNaN(endTomorrow)) {
+      // Jika kosong, atur "endTomorrow" menjadi "today + 2"
+      endTomorrow = new Date(startToday);
+      endTomorrow.setDate(endTomorrow.getDate() + 4);
+      endTomorrow.setHours(23, 59, 59, 999); // Set jam 23:59:59:999
+    }
   }
 
   // Ambil data dari CSV
@@ -479,6 +639,7 @@ function validateAndPlot() {
     var tssell = 0;
     var tsbuy = 0;
     var enambelas = new Date();
+    var hasil = 0;
     enambelas.setHours(16, 0, 0, 0);
     var sixteen = new Date();
     sixteen.setHours(18, 0, 0, 0);
@@ -500,8 +661,10 @@ function validateAndPlot() {
       if (lowestLowIndex < highestHighIndex) {
         console.log("UPTREND");
         uptrend = true;
+        var trend = "UP";
         // addParagraphToAnalisa(`UPTREND`);
         if (fibo61 <= first_next && first_next <= fibo23) {
+          var setup = "A";
           // addParagraphToAnalisa(`OPEN A`);
           console.log("OPEN A");
           selisihbep = parseFloat(fibo0 - fibo23).toFixed(2);
@@ -539,6 +702,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -547,6 +711,7 @@ function validateAndPlot() {
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
                 } else if (
                   bep &&
                   (!tp1b || !tp2b || !tp3b || !tp4b || !tp5b || !tp6b)
@@ -556,6 +721,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -563,6 +729,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                 stop_loss = true;
@@ -570,6 +737,7 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
                 break;
               } else {
                 stop_loss = true;
@@ -577,8 +745,29 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Stop Loss";
                 break;
               }
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk
+              );
             }
             if (
               (open_value >= stoploss ||
@@ -594,6 +783,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(sellstop - stoploss);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -602,6 +792,7 @@ function validateAndPlot() {
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
                 } else if (
                   bep &&
                   (!tp1s || !tp2s || !tp3s || !tp4s || !tp5s || !tp6s)
@@ -611,6 +802,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -618,6 +810,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                 stop_loss = true;
@@ -625,14 +818,36 @@ function validateAndPlot() {
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
                 break;
               }
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk
+              );
             }
           }
           if (
@@ -660,6 +875,8 @@ function validateAndPlot() {
                   sell_stop = false;
                 } else if (sell_stop && !sell) {
                   stop_loss = false;
+                  var order = "Sell Stop";
+                  var entry = sellstop;
                   console.log(`SELL STOP AT : ${sellstop}`);
                   simulasi(`SELL STOP AT : ${sellstop} in ${minute}`);
                   sell = true;
@@ -683,6 +900,8 @@ function validateAndPlot() {
                   sell_stop = false;
                 } else if (buy_stop && !buy) {
                   stop_loss = false;
+                  var order = "Buy Stop";
+                  var entry = buystop;
                   console.log(`BUY STOP AT : ${buystop}`);
                   simulasi(`BUY STOP AT : ${buystop} in ${minute}`);
                   buy = true;
@@ -844,15 +1063,36 @@ function validateAndPlot() {
             if (buy_stop && !sell_stop) {
               hasil = parseFloat(sellstop - open_value).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
-              break;
+              var closesetup = "Jam 11";
             } else if (sell_stop && !buy_stop) {
               hasil = parseFloat(open_value - buystop).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
-              break;
+              var closesetup = "Jam 11";
             }
+            var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+            var closeprice = stoploss;
+            var closepip = hasil;
+            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            updateTable(
+              counter,
+              minute,
+              highestHigh,
+              lowestLow,
+              trend,
+              setup,
+              order,
+              entry,
+              stoploss,
+              hasilpip,
+              closesetup,
+              closeprice,
+              closepip,
+              risk
+            );
             break;
           }
         } else if (fibo23 <= first_next && first_next <= fibo0) {
+          var setup = "B";
           selisihbep = parseFloat((fibo61 - fibo100).toFixed(2));
           b2a = (fibo0 + fibo23) / 2 - keypip;
           b2b = fibo0 - keypip;
@@ -890,6 +1130,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -898,6 +1139,7 @@ function validateAndPlot() {
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
                 } else if (
                   bep &&
                   (!tp1b || !tp2b || !tp3b || !tp4b || !tp5b || !tp6b)
@@ -907,6 +1149,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -914,6 +1157,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                 stop_loss = true;
@@ -921,6 +1165,7 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
                 break;
               } else {
                 stop_loss = true;
@@ -928,8 +1173,29 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Stop Loss";
                 break;
               }
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk
+              );
             }
             if (
               (open_value >= stoploss ||
@@ -945,6 +1211,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(sellstop - stoploss);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -953,6 +1220,7 @@ function validateAndPlot() {
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
                 } else if (
                   bep &&
                   (!tp1s || !tp2s || !tp3s || !tp4s || !tp5s || !tp6s)
@@ -962,6 +1230,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -969,6 +1238,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                 stop_loss = true;
@@ -976,14 +1246,37 @@ function validateAndPlot() {
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Stop Loss";
+
                 break;
               }
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk
+              );
             }
           }
 
@@ -1006,6 +1299,8 @@ function validateAndPlot() {
                   buy_stop = false;
                 } else if (sell_stop && !sell) {
                   stop_loss = false;
+                  var order = "Sell Stop";
+                  var entry = sellstop;
                   simulasi(`SELL STOP AT: ${sellstop} in ${minute}`);
                   sell = true;
                   buy = false;
@@ -1031,6 +1326,8 @@ function validateAndPlot() {
                   buy_stop = false;
                 } else if (buy_stop && !buy) {
                   stop_loss = false;
+                  var order = "Buy Stop";
+                  var entry = buystop;
                   simulasi(`BUY STOP AT: ${buystop} in ${minute}`);
                   sell = false;
                   buy = true;
@@ -1190,15 +1487,37 @@ function validateAndPlot() {
             simulasi(`buy ${buystop}`);
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
-            if (buy_stop && !sell_stop) {
+            if (!buy && sell) {
               hasil = parseFloat(sellstop - open_value).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
-              break;
-            } else if (sell_stop && !buy_stop) {
+              var closesetup = "Jam 11";
+              // break;
+            } else if (!sell && buy) {
               hasil = parseFloat(open_value - buystop).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
-              break;
+              var closesetup = "Jam 11";
+              // break;
             }
+            var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+            var closeprice = stoploss;
+            var closepip = hasil;
+            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            updateTable(
+              counter,
+              minute,
+              highestHigh,
+              lowestLow,
+              trend,
+              setup,
+              order,
+              entry,
+              stoploss,
+              hasilpip,
+              closesetup,
+              closeprice,
+              closepip,
+              risk
+            );
             break;
           }
         } else if (fibo100 <= first_next && first_next <= fibo61) {
@@ -1206,9 +1525,11 @@ function validateAndPlot() {
           console.log("OPEN C");
         }
       } else {
+        var trend = "DOWN";
         downtrend = true;
         if (fibo61 >= first_next && first_next >= fibo23) {
           // addParagraphToAnalisa(`OPEN A`);
+          var setup = "A";
           selisihbep = fibo23 - fibo0;
           tssell = parseFloat(fibo0 - selisihbep).toFixed(2);
           a1a = parseFloat(fibo50 + keypip + sphread).toFixed(2);
@@ -1244,6 +1565,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1252,6 +1574,7 @@ function validateAndPlot() {
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
                 } else if (
                   bep &&
                   (!tp1b || !tp2b || !tp3b || !tp4b || !tp5b || !tp6b)
@@ -1261,6 +1584,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1268,6 +1592,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                 stop_loss = true;
@@ -1275,6 +1600,7 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
                 break;
               } else {
                 stop_loss = true;
@@ -1282,8 +1608,29 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Stop Loss";
                 break;
               }
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk
+              );
             }
             if (
               (open_value >= stoploss ||
@@ -1299,6 +1646,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(sellstop - stoploss);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1307,6 +1655,7 @@ function validateAndPlot() {
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
                 } else if (
                   bep &&
                   (!tp1s || !tp2s || !tp3s || !tp4s || !tp5s || !tp6s)
@@ -1316,6 +1665,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1323,6 +1673,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                 stop_loss = true;
@@ -1330,13 +1681,37 @@ function validateAndPlot() {
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
               } else {
                 stop_loss = true;
+                simulasi(`STOP LOSS : ${stoploss}`);
+
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Stop Loss";
                 break;
               }
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk
+              );
             }
           }
           if (
@@ -1364,6 +1739,8 @@ function validateAndPlot() {
                   sell_stop = false;
                 } else if (sell_stop && !sell) {
                   stop_loss = false;
+                  var order = "Sell Stop";
+                  var entry = sellstop;
                   console.log(`SELL STOP AT : ${sellstop}`);
                   simulasi(`SELL STOP AT : ${sellstop} in ${minute}`);
                   sell = true;
@@ -1387,6 +1764,8 @@ function validateAndPlot() {
                   sell_stop = false;
                 } else if (buy_stop && !buy) {
                   stop_loss = false;
+                  var order = "Buy Stop";
+                  var entry = buystop;
                   console.log(`BUY STOP AT : ${buystop}`);
                   simulasi(`BUY STOP AT : ${buystop} in ${minute}`);
                   buy = true;
@@ -1551,12 +1930,36 @@ function validateAndPlot() {
             if (buy_stop && !sell_stop) {
               hasil = parseFloat(sellstop - open_value).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
+              var closesetup = "Jam 11";
+
               break;
             } else if (sell_stop && !buy_stop) {
               hasil = parseFloat(open_value - buystop).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
+              var closesetup = "Jam 11";
+
               break;
             }
+            var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+            var closeprice = stoploss;
+            var closepip = hasil;
+            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            updateTable(
+              counter,
+              minute,
+              highestHigh,
+              lowestLow,
+              trend,
+              setup,
+              order,
+              entry,
+              stoploss,
+              hasilpip,
+              closesetup,
+              closeprice,
+              closepip,
+              risk
+            );
             break;
           }
         } else if (fibo23 >= first_next && first_next >= fibo0) {
@@ -1597,6 +2000,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1605,6 +2009,7 @@ function validateAndPlot() {
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
                 } else if (
                   bep &&
                   (!tp1b || !tp2b || !tp3b || !tp4b || !tp5b || !tp6b)
@@ -1614,6 +2019,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1621,6 +2027,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(stoploss - buystop).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                 stop_loss = true;
@@ -1628,6 +2035,7 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
                 break;
               } else {
                 stop_loss = true;
@@ -1635,8 +2043,30 @@ function validateAndPlot() {
                 hasil = parseFloat(stoploss - buystop).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Stop Loss";
+
                 break;
               }
+              var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+              var closeprice = stoploss;
+              var closepip = hasil;
+              var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk
+              );
             }
             if (
               (open_value >= stoploss ||
@@ -1652,6 +2082,7 @@ function validateAndPlot() {
                   buy_stop = false;
                   hasil = parseFloat(sellstop - stoploss);
                   simulasi(hasil);
+                  var closesetup = "Trail Stop";
                 } else if (minute.getHours() >= enambelas.getHours()) {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1660,6 +2091,8 @@ function validateAndPlot() {
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
                   simulasi(counter);
+                  var closesetup = "Stop Loss";
+
                   break;
                 } else if (
                   bep &&
@@ -1670,6 +2103,7 @@ function validateAndPlot() {
                   sell_stop = true;
                   buy_stop = true;
                   bep = false;
+                  var closesetup = "BEP";
                 } else {
                   stop_loss = true;
                   simulasi(`STOP LOSS : ${stoploss}`);
@@ -1677,6 +2111,7 @@ function validateAndPlot() {
                   buy_stop = true;
                   hasil = parseFloat(sellstop - stoploss).toFixed(2);
                   simulasi(hasil);
+                  var closesetup = "Stop Loss";
                 }
               } else if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                 stop_loss = true;
@@ -1684,15 +2119,38 @@ function validateAndPlot() {
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Trail Stop";
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
                 hasil = parseFloat(sellstop - stoploss).toFixed(2);
                 simulasi(hasil);
                 simulasi(counter);
+                var closesetup = "Stop Loss";
+
                 break;
               }
             }
+            var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+            var closeprice = stoploss;
+            var closepip = hasil;
+            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            updateTable(
+              counter,
+              minute,
+              highestHigh,
+              lowestLow,
+              trend,
+              setup,
+              order,
+              entry,
+              stoploss,
+              hasilpip,
+              closesetup,
+              closeprice,
+              closepip,
+              risk
+            );
           }
 
           if (b1d >= open_value && open_value >= b1c) {
@@ -1714,6 +2172,8 @@ function validateAndPlot() {
                   buy_stop = false;
                 } else if (sell_stop && !sell) {
                   stop_loss = false;
+                  var order = "Sell Stop";
+                  var entry = sellstop;
                   simulasi(`SELL STOP AT: ${sellstop} in ${minute}`);
                   sell = true;
                   buy = false;
@@ -1739,6 +2199,8 @@ function validateAndPlot() {
                   buy_stop = false;
                 } else if (buy_stop && !buy) {
                   stop_loss = false;
+                  var order = "Buy Stop";
+                  var entry = buystop;
                   simulasi(`BUY STOP AT: ${buystop} in ${minute}`);
                   sell = false;
                   buy = true;
@@ -1901,12 +2363,34 @@ function validateAndPlot() {
             if (buy_stop && !sell_stop) {
               hasil = parseFloat(sellstop - open_value).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
+              var closesetup = "Jam 11";
               break;
             } else if (sell_stop && !buy_stop) {
               hasil = parseFloat(open_value - buystop).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
+              var closesetup = "Jam 11";
               break;
             }
+            var hasilpip = parseFloat(entry - stoploss).toFixed(2);
+            var closeprice = stoploss;
+            var closepip = hasil;
+            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            updateTable(
+              counter,
+              minute,
+              highestHigh,
+              lowestLow,
+              trend,
+              setup,
+              order,
+              entry,
+              stoploss,
+              hasilpip,
+              closesetup,
+              closeprice,
+              closepip,
+              risk
+            );
             break;
           }
         } else if (fibo100 >= first_next && first_next >= fibo61) {
@@ -1936,4 +2420,4 @@ function findHighest(data) {
   return highest;
 }
 
-// validateAndPlot();
+validateAndPlot();
