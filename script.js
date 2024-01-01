@@ -248,7 +248,25 @@ function updateTable(
         <td>${risk}%</td>
       `;
 }
+async function loadCSV() {
+  const response = await fetch('2021f.csv'); // Replace with your CSV file path
+  const text = await response.text();
+  const rows = text.split('\n').map(row => row.split(','));
+  return rows;
+}
+
+// Function to check if a date exists in the CSV
+async function checkCSVForDate(date, csvData) {
+  return csvData.some(row => {
+    const csvDate = new Date(row[0]); // Assuming date is in the first column
+    return date.getTime() === csvDate.getTime();
+  });
+}
+
 async function dateLoop() {
+  // Load CSV data into memory
+  var csvData = await loadCSV();
+
   var inputStartDate = new Date(document.getElementById("start-date").value);
   var inputEndDate = new Date(document.getElementById("end-date").value);
 
@@ -259,67 +277,45 @@ async function dateLoop() {
 
   var startToday = new Date(inputStartDate);
   var FinishDate = new Date(inputEndDate);
-  // startToday.setDate(startToday.getDate() - 1);
 
-  var keyPipInput = document.getElementById("keyPipInput");
-  var keypip = keyPipInput.value;
-
-  // Jika nilai input kosong, atur keyPip ke 1
-  if (keypip.trim() === "") {
-    keypip = 1.55;
-  }
-
-  for (
-    var currentDate = new Date(startToday);
-    currentDate.getTime() <= FinishDate.getTime();
-    currentDate.setDate(currentDate.getDate() + 1)
-  ) {
-    if (startToday.getDate() === FinishDate.getDate()) {
-      console.log("stop");
-      break;
-    }
+  while (startToday.getTime() <= FinishDate.getTime()) {
     console.log(startToday);
-    if (!startToday || isNaN(startToday)) {
-      // Jika kosong, atur "endTomorrow" menjadi "today + 2"
-      startToday = new Date(startToday);
-      startToday.setDate(startToday.getDate() + 1);
-      if (!startToday || isNaN(startToday)) {
-        startToday = new Date(startToday);
-        startToday.setDate(startToday.getDate() + 2);
-      } if (!startToday || isNaN(startToday)) {
-        startToday = new Date(startToday);
-        startToday.setDate(startToday.getDate() + 3);
-      }
-      else {
-        startToday = new Date(startToday);
-      }
+
+    // Check if startToday exists in the CSV
+    if (!await checkCSVForDate(startToday, csvData)) {
+      startToday.setDate(startToday.getDate() + 3);
     }
-    startToday.setHours(1, 0, 0, 0); // Set jam 01:00:00
+    var keyPipInput = document.getElementById("keyPipInput");
+    var keypip = keyPipInput.value;
+  
+    if (keypip.trim() === "") {
+      keypip = 1.55;
+    }
     var endToday = new Date(startToday);
-    endToday.setHours(23, 59, 59, 999); // Set jam 01:00:00
-    var endTomorrow = new Date(startToday);
-    endTomorrow.setDate(endTomorrow.getDate() + 1);
+    endToday.setHours(23, 59, 59, 999);
+    startToday.setHours(1,0,0,0);
     var startTomorrow = new Date(startToday);
     startTomorrow.setDate(startTomorrow.getDate() + 1);
     startTomorrow.setHours(1, 0, 0, 0);
+    var endTomorrow = new Date(startTomorrow);
     endTomorrow.setHours(23, 59, 59, 999);
-    if (!endTomorrow || isNaN(endTomorrow)) {
-      endTomorrow = new Date(startToday);
-      endTomorrow.setDate(endTomorrow.getDate() + 3);
-      startTomorrow.setHours(1, 0, 0, 0);
-      endTomorrow.setHours(23, 59, 59, 999);
-      if (!endTomorrow || isNaN(endTomorrow)) {
-        endTomorrow = new Date(startToday);
-        endTomorrow.setDate(endTomorrow.getDate() + 4);
-        startTomorrow.setHours(1, 0, 0, 0);
-        endTomorrow.setHours(23, 59, 59, 999);
-      }
+
+    // Check if startTomorrow exists in the CSV
+    if (!await checkCSVForDate(startTomorrow, csvData)) {
+      startTomorrow.setDate(startToday.getDate() + 3);
     }
+
+    var endTomorrow = new Date(startTomorrow);
+    endTomorrow.setHours(23, 59, 59, 999);
+
+    // Call your validateAndPlot function here
     validateAndPlot(startToday, startTomorrow, endToday, endTomorrow, keypip);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    startToday.setDate(startToday.getDate() + 1);
+
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+    startToday = new Date(startTomorrow);
   }
 }
+
 function validateAndPlot(
   startToday,
   startTomorrow,
@@ -486,47 +482,46 @@ function validateAndPlot(
     }
     var tomorrowsimulation = aggregateDataMinute(tomorrowData);
     // Console log data per menit untuk besok
-    var first_next = parseFloat(tomorrowsimulation[0].Open).toFixed(2);
     var uptrend = false;
     var downtrend = false;
     if (lowestLowIndex < highestHighIndex) {
       console.log("UPTREND");
       uptrend = true;
       addParagraphToAnalisa(`UPTREND`);
-      if (fibo61 <= first_next <= fibo23) {
-        addParagraphToAnalisa(`OPEN A`);
-      } else if (fibo23 <= first_next <= fibo0) {
-        addParagraphToAnalisa(`OPEN B`);
-      } else if (fibo100 <= first_next <= fibo61) {
-        addParagraphToAnalisa(`OPEN C`);
-      }
+      // if (fibo61 <= first_next <= fibo23) {
+      //   addParagraphToAnalisa(`OPEN A`);
+      // } else if (fibo23 <= first_next <= fibo0) {
+      //   addParagraphToAnalisa(`OPEN B`);
+      // } else if (fibo100 <= first_next <= fibo61) {
+      //   addParagraphToAnalisa(`OPEN C`);
+      // }
     } else {
       console.log("DOWNTREND");
       addParagraphToAnalisa(`DOWNTREND`);
       downtrend = true;
-      if (fibo61 >= first_next >= fibo23) {
-        addParagraphToAnalisa(`OPEN A`);
-        console.log("OPEN A");
-      } else if (fibo23 >= first_next >= fibo0) {
-        addParagraphToAnalisa(`OPEN B`);
-        console.log("OPEN B");
-      } else if (fibo100 >= first_next >= fibo61) {
-        addParagraphToAnalisa(`OPEN C`);
-        console.log("OPEN C");
-      }
+      // if (fibo61 >= first_next >= fibo23) {
+      //   addParagraphToAnalisa(`OPEN A`);
+      //   console.log("OPEN A");
+      // } else if (fibo23 >= first_next >= fibo0) {
+      //   addParagraphToAnalisa(`OPEN B`);
+      //   console.log("OPEN B");
+      // } else if (fibo100 >= first_next >= fibo61) {
+      //   addParagraphToAnalisa(`OPEN C`);
+      //   console.log("OPEN C");
+      // }
     }
 
     // Tampilkan nilai terendah, tertinggi, dan level Fibonacci pada console log
     console.log("Lowest Low:", lowestLow);
     console.log("Highest High:", highestHigh);
-    console.log(
-      "Lowest Low Time:",
-      selectedAggregatedData[lowestLowIndex].Date
-    );
-    console.log(
-      "Highest High Time:",
-      selectedAggregatedData[highestHighIndex].Date
-    );
+    // console.log(
+    //   "Lowest Low Time:",
+    //   selectedAggregatedData[lowestLowIndex].Date
+    // );
+    // console.log(
+    //   "Highest High Time:",
+    //   selectedAggregatedData[highestHighIndex].Date
+    // );
     console.log("fibo0 : " + fibo0);
     console.log("fibo23 : " + fibo23);
     console.log("fibo38 : " + fibo38);
@@ -778,6 +773,7 @@ function validateAndPlot(
       var open_value = parseFloat(tomorrowsimulation[i].Open).toFixed(2);
       var low_value = parseFloat(tomorrowsimulation[i].Low).toFixed(2);
       var high_value = parseFloat(tomorrowsimulation[i].High).toFixed(2); // Fixed: changed to High instead of Low
+      var first_next = parseFloat(tomorrowsimulation[0].Open).toFixed(2);
       console
         .log
         // `Minute: ${minute}, Open: ${open_value}, High: ${high_value}, Low: ${low_value}`
@@ -1400,7 +1396,7 @@ function validateAndPlot(
                   simulasi(hasil);
                   var closesetup = "Stop Loss";
                 }
-                
+
               } else if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                 stop_loss = true;
                 simulasi(`TRAIL STOP : ${stoploss}`);
