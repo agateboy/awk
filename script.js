@@ -847,7 +847,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = false;
+                  buy_stop = true;
                   bep = false;
                   var hasil = 0;
                   var closesetup = "BEP";
@@ -928,7 +928,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = false;
+                  sell_stop = true;
                   buy_stop = true;
                   bep = false;
                   var hasil = 0;
@@ -1301,7 +1301,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = false;
+                  buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
                   var hasil = 0;
@@ -1382,7 +1382,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = false;
+                  sell_stop = true;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -1448,7 +1448,7 @@ function validateAndPlot(
               buy_stop = true;
               setopen = true;
             } else if (setopen) {
-              if (open_value <= b2c || low_value <= b2c || high_value <= b2c) {
+              if (open_value <= sellstop || low_value <= sellstop || high_value <= sellstop) {
                 if (counter >= 4) {
                   buy_stop = false;
                   sell_stop = false;
@@ -1471,9 +1471,9 @@ function validateAndPlot(
 
                 }
               } else if (
-                open_value >= b2d ||
-                low_value >= b2d ||
-                high_value >= b2d
+                open_value >= buystop ||
+                low_value >= buystop ||
+                high_value >= buystop
               ) {
                 if (counter >= 4) {
                   buy_stop = false;
@@ -1751,7 +1751,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = false;
+                  buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
                   var hasil = 0;
@@ -1834,7 +1834,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = false;
+                  sell_stop = true;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -2198,7 +2198,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = false;
+                  buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
                   var hasil = 0;
@@ -2279,7 +2279,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = false;
+                  sell_stop = true;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -2654,7 +2654,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = false;
+                  buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
                   var hasil = 0;
@@ -2738,7 +2738,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = false;
+                  sell_stop = true;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -2801,7 +2801,7 @@ function validateAndPlot(
               buy_stop = true;
               setopen = true;
             } else if (setopen) {
-              if (open_value <= b1c || low_value <= b1c || high_value <= b1c) {
+              if (open_value <= sellstop || low_value <= sellstop || high_value <= sellstop) {
                 if (counter >= 4) {
                   buy_stop = false;
                   sell_stop = false;
@@ -2823,9 +2823,9 @@ function validateAndPlot(
                   var hasilpip = parseFloat(stoploss - entry).toFixed(2);
                 }
               } else if (
-                open_value >= b1d ||
-                low_value >= b1d ||
-                high_value >= b1d
+                open_value >= buystop ||
+                low_value >= buystop ||
+                high_value >= buystop
               ) {
                 if (counter >= 4) {
                   buy_stop = false;
@@ -3102,7 +3102,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = false;
+                  buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
                   var hasil = 0;
@@ -3185,7 +3185,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = false;
+                  sell_stop = true;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
