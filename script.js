@@ -826,6 +826,7 @@ function validateAndPlot(
                 high_value <= stoploss) &&
               buy
             ) {
+              buy = false;
               if (counter < 4) {
                 if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                   stop_loss = true;
@@ -906,6 +907,7 @@ function validateAndPlot(
                 high_value >= stoploss) &&
               sell
             ) {
+              sell = false;
               if (counter < 4) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
@@ -1248,7 +1250,7 @@ function validateAndPlot(
         } else if (fibo23 <= first_next && first_next <= fibo0) {
           var setup = "B";
           selisihbep = parseFloat((fibo61 - fibo100).toFixed(2));
-          b2a = (fibo0 + fibo23) / 2 - keypip;
+          b2a = ((fibo0 + fibo23) / 2) - keypip;
           b2b = fibo0 - keypip;
           b2c = parseFloat(fibo23 - keypip).toFixed(2);
           b2d = fibo0 + keypip + sphread;
@@ -1276,6 +1278,7 @@ function validateAndPlot(
                 high_value <= stoploss) &&
               buy
             ) {
+              buy = false;
               if (counter < 4) {
                 if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                   stop_loss = true;
@@ -1350,12 +1353,13 @@ function validateAndPlot(
                 risk
               );
             }
-            if (
+            else if (
               (open_value >= stoploss ||
                 low_value >= stoploss ||
                 high_value >= stoploss) &&
               sell
             ) {
+              sell = false;
               if (counter < 4) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
@@ -1393,6 +1397,7 @@ function validateAndPlot(
                   simulasi(hasil);
                   var closesetup = "Stop Loss";
                 }
+                
               } else if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                 stop_loss = true;
                 simulasi(`TRAIL STOP : ${stoploss}`);
@@ -1410,7 +1415,6 @@ function validateAndPlot(
 
                 break;
               }
-
               var closeprice = stoploss;
               var closepip = hasil;
               var risk = parseFloat(closepip / hasilpip).toFixed(2);
@@ -1430,7 +1434,9 @@ function validateAndPlot(
                 closepip,
                 risk
               );
+
             }
+
           }
 
           if (b2d >= open_value && open_value >= b2c) {
@@ -1718,6 +1724,8 @@ function validateAndPlot(
                 high_value <= stoploss) &&
               buy
             ) {
+              buy = false;
+
               if (counter < 4) {
                 if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                   stop_loss = true;
@@ -1799,6 +1807,7 @@ function validateAndPlot(
                 high_value >= stoploss) &&
               sell
             ) {
+              sell = false;
               if (counter < 4) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
@@ -2161,6 +2170,8 @@ function validateAndPlot(
                 high_value <= stoploss) &&
               buy
             ) {
+              buy = false;
+
               if (counter < 4) {
                 if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                   stop_loss = true;
@@ -2241,6 +2252,7 @@ function validateAndPlot(
                 high_value >= stoploss) &&
               sell
             ) {
+              sell = false;
               if (counter < 4) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
@@ -2612,6 +2624,8 @@ function validateAndPlot(
                 high_value <= stoploss) &&
               buy
             ) {
+              buy = false;
+
               if (counter < 4) {
                 if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                   stop_loss = true;
@@ -2693,6 +2707,7 @@ function validateAndPlot(
                 high_value >= stoploss) &&
               sell
             ) {
+              sell = false;
               if (counter < 4) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
@@ -3054,6 +3069,8 @@ function validateAndPlot(
                 high_value <= stoploss) &&
               buy
             ) {
+              buy = false;
+
               if (counter < 4) {
                 if (tp1b || tp2b || tp3b || tp4b || tp5b || tp6b) {
                   stop_loss = true;
@@ -3135,6 +3152,7 @@ function validateAndPlot(
                 high_value >= stoploss) &&
               sell
             ) {
+              sell = false;
               if (counter < 4) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
