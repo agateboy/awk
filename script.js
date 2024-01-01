@@ -852,7 +852,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = true;
+                  buy_stop = false;
                   bep = false;
                   var closesetup = "BEP";
                 } else {
@@ -932,7 +932,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = true;
+                  sell_stop = false;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -1304,7 +1304,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = true;
+                  buy_stop = false;
                   bep = false;
                   var closesetup = "BEP";
                 } else {
@@ -1384,7 +1384,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = true;
+                  sell_stop = false;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -1752,7 +1752,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = true;
+                  buy_stop = false;
                   bep = false;
                   var closesetup = "BEP";
                 } else {
@@ -1834,7 +1834,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = true;
+                  sell_stop = false;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -2197,7 +2197,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = true;
+                  buy_stop = false;
                   bep = false;
                   var closesetup = "BEP";
                 } else {
@@ -2277,7 +2277,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = true;
+                  sell_stop = false;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -2651,7 +2651,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = true;
+                  buy_stop = false;
                   bep = false;
                   var closesetup = "BEP";
                 } else {
@@ -2734,7 +2734,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = true;
+                  sell_stop = false;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";
@@ -3097,7 +3097,7 @@ function validateAndPlot(
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
                   sell_stop = true;
-                  buy_stop = true;
+                  buy_stop = false;
                   bep = false;
                   var closesetup = "BEP";
                 } else {
@@ -3179,7 +3179,7 @@ function validateAndPlot(
                 ) {
                   stop_loss = true;
                   simulasi(`BEP AT : ${stoploss}`);
-                  sell_stop = true;
+                  sell_stop = false;
                   buy_stop = true;
                   bep = false;
                   var closesetup = "BEP";

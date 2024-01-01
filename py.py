@@ -8,8 +8,8 @@ intraday = pd.read_csv('2021f.csv', index_col=0, parse_dates=True)
 intraday = intraday.drop('Volume', axis=1)  # Volume is zero anyway for this intraday data set
 
 # Specify the date range for iday
-start_date = '11-09-2021 01:00'
-end_date = '11-09-2021 23:59'
+start_date = '11-11-2021 01:00'
+end_date = '11-11-2021 23:59'
 startday = start_date
 endday  = end_date
 def main():
