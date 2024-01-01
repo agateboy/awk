@@ -290,7 +290,7 @@ async function dateLoop() {
         startToday = new Date(startToday);
         startToday.setDate(startToday.getDate() + 3);
       }
-      else{
+      else {
         startToday = new Date(startToday);
       }
     }
@@ -1209,21 +1209,23 @@ function validateAndPlot(
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
             if (buy) {
-              hasil = parseFloat(entry - open_value).toFixed(2);
+              hasil = parseFloat(open_value - entry).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             } else if (sell) {
-              hasil = parseFloat(open_value - entry).toFixed(2);
+              hasil = parseFloat(entry - open_value).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             }
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
 
             updateTable(
               counter,
@@ -1649,21 +1651,21 @@ function validateAndPlot(
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
             if (buy) {
-              hasil = parseFloat(entry - open_value).toFixed(2);
-              simulasi(`Close Jam 11 ${hasil}`);
-              var closeprice = open_value;
-              var closesetup = "Jam 11";
-              var closepip = hasil;
-              // break;
-            } else if (sell) {
               hasil = parseFloat(open_value - entry).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
+            } else if (sell) {
+              hasil = parseFloat(entry - open_value).toFixed(2);
+              simulasi(`Close Jam 11 ${hasil}`);
+              var closeprice = open_value;
+              var closesetup = "Jam 11";
+              var closepip = hasil;
+              // break;
             }
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
 
             updateTable(
               counter,
@@ -2089,21 +2091,23 @@ function validateAndPlot(
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
             if (buy) {
-              hasil = parseFloat(entry - open_value).toFixed(2);
+              hasil = parseFloat(open_value - entry).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             } else if (sell) {
-              hasil = parseFloat(open_value - entry).toFixed(2);
+              hasil = parseFloat(entry - open_value).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             }
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
 
             updateTable(
               counter,
@@ -2541,21 +2545,23 @@ function validateAndPlot(
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
             if (buy) {
-              hasil = parseFloat(entry - open_value).toFixed(2);
+              hasil = parseFloat(open_value - entry).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             } else if (sell) {
-              hasil = parseFloat(open_value - entry).toFixed(2);
+              hasil = parseFloat(entry - open_value).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             }
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
 
             updateTable(
               counter,
@@ -2980,21 +2986,21 @@ function validateAndPlot(
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
             if (buy) {
-              hasil = parseFloat(entry - open_value).toFixed(2);
-              simulasi(`Close Jam 11 ${hasil}`);
-              var closeprice = open_value;
-              var closesetup = "Jam 11";
-              var closepip = hasil;
-              // break;
-            } else if (sell) {
               hasil = parseFloat(open_value - entry).toFixed(2);
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
+            } else if (sell) {
+              hasil = parseFloat(entry - open_value).toFixed(2);
+              simulasi(`Close Jam 11 ${hasil}`);
+              var closeprice = open_value;
+              var closesetup = "Jam 11";
+              var closepip = hasil;
+              // break;
             }
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
 
 
             updateTable(
@@ -3424,21 +3430,23 @@ function validateAndPlot(
             simulasi(`sell ${sellstop}`);
             simulasi(bep);
             if (buy) {
-              hasil = parseFloat(entry - open_value).toFixed(2);
+              hasil = parseFloat(open_value - entry).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             } else if (sell) {
-              hasil = parseFloat(open_value - entry).toFixed(2);
+              hasil = parseFloat(entry - open_value).toFixed(2);
+
               simulasi(`Close Jam 11 ${hasil}`);
               var closeprice = open_value;
               var closesetup = "Jam 11";
               var closepip = hasil;
               // break;
             }
-            var risk = parseFloat(-(closepip / hasilpip)).toFixed(2);
+            var risk = parseFloat(closepip / hasilpip).toFixed(2);
 
             updateTable(
               counter,
