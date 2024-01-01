@@ -3490,7 +3490,6 @@ function validateAndPlot(
   });
   tablecounter++;
 }
-// Fungsi untuk mencari nilai terendah pada kolom "Low"
 function findLowest(data) {
   var lowest = Number.MAX_VALUE;
   data.forEach(function (d) {
