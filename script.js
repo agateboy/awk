@@ -226,7 +226,17 @@ async function dateLoop() {
     if (!startToday || isNaN(startToday)) {
       // Jika kosong, atur "endTomorrow" menjadi "today + 2"
       startToday = new Date(startToday);
-      startToday.setDate(startToday.getDate() + 3);
+      startToday.setDate(startToday.getDate() + 1);
+      if (!startToday || isNaN(startToday)) {
+        startToday = new Date(startToday);
+        startToday.setDate(startToday.getDate() + 2);
+      } if (!startToday || isNaN(startToday)) {
+        startToday = new Date(startToday);
+        startToday.setDate(startToday.getDate() + 3);
+      }
+      else{
+        startToday = new Date(startToday);
+      }
     }
     startToday.setHours(1, 0, 0, 0); // Set jam 01:00:00
     var endToday = new Date(startToday);
