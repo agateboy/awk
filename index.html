@@ -67,10 +67,57 @@
         flex: 1;
         height: 500px;
       }
-      #tabel td,
-      th {
-        border: solid 1px black;
+      /* Style the table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
       }
+
+      /* Style the table header */
+      thead {
+        background-color: #f2f2f2;
+      }
+
+      th,
+      td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      /* Style alternating rows */
+      tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      /* Highlight on hover */
+      tbody tr:hover {
+        background-color: #e6f7ff;
+      }
+
+      /* Set fixed width for specific columns if needed */
+      th:first-child,
+      td:first-child {
+        width: 80px; /* Adjust as needed */
+      }
+
+      /* Add space for percentage column */
+      th:last-child,
+      td:last-child {
+        min-width: 100px; /* Adjust as needed */
+      }
+
+      /* Center text in numeric columns */
+      th:nth-child(2),
+      td:nth-child(2),
+      th:nth-child(10),
+      td:nth-child(10),
+      th:nth-child(14),
+      td:nth-child(14) {
+        text-align: center;
+      }
+
       @media screen and (max-width: 768px) {
         .panel {
           display: flex;

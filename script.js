@@ -1,3 +1,42 @@
+// function saveToCSV() {
+//   var csvContent = "";
+
+//   // Ambil semua tabel
+//   var tables = document.querySelectorAll("table");
+
+//   tables.forEach(function (table) {
+//     // Ambil semua baris dalam tbody
+//     var rows = table.querySelectorAll("tbody tr");
+
+//     rows.forEach(function (row) {
+//       var rowData = [];
+
+//       // Ambil semua sel dalam baris
+//       var cells = row.querySelectorAll("td");
+
+//       cells.forEach(function (cell) {
+//         rowData.push(cell.textContent);
+//       });
+
+//       // Gabungkan data menjadi baris CSV
+//       csvContent += rowData.join(",") + "\n";
+//     });
+//   });
+
+//   // Buat objek Blob dan tautan unduhan
+//   var blob = new Blob([csvContent], { type: "text/csv" });
+//   var url = URL.createObjectURL(blob);
+
+//   // Tautan unduhan
+//   var a = document.createElement("a");
+//   a.href = url;
+//   a.download = "table_data.csv";
+//   document.body.appendChild(a);
+//   a.click();
+
+//   // Hapus tautan setelah diunduh
+//   document.body.removeChild(a);
+// }
 function saveToCSV() {
   var csvContent = "";
 
@@ -7,6 +46,22 @@ function saveToCSV() {
   tables.forEach(function (table) {
     // Ambil semua baris dalam tbody
     var rows = table.querySelectorAll("tbody tr");
+
+    // Ambil header dari th dalam thead
+    var headerRow = table.querySelector("thead tr");
+    var headerData = [];
+
+    // Ambil semua sel dalam header
+    var headerCells = headerRow.querySelectorAll("th");
+
+    headerCells.forEach(function (headerCell) {
+      headerData.push(headerCell.textContent);
+    });
+
+    // Gabungkan header menjadi baris CSV hanya pada baris pertama
+    if (csvContent === "") {
+      csvContent += headerData.join(",") + "\n";
+    }
 
     rows.forEach(function (row) {
       var rowData = [];
@@ -37,6 +92,7 @@ function saveToCSV() {
   // Hapus tautan setelah diunduh
   document.body.removeChild(a);
 }
+
 
 // function updateTable(
 //   counter,
