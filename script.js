@@ -39,6 +39,7 @@
 // }
 function saveToCSV() {
   var csvContent = "";
+  var totalRisk = 0; // Variabel untuk menyimpan total risiko
 
   // Ambil semua tabel
   var tables = document.querySelectorAll("table");
@@ -58,6 +59,9 @@ function saveToCSV() {
       headerData.push(headerCell.textContent);
     });
 
+    // Tambahkan kolom "Total Risk" ke header
+    headerData.push("Total Risk");
+
     // Gabungkan header menjadi baris CSV hanya pada baris pertama
     if (csvContent === "") {
       csvContent += headerData.join(",") + "\n";
@@ -69,9 +73,18 @@ function saveToCSV() {
       // Ambil semua sel dalam baris
       var cells = row.querySelectorAll("td");
 
-      cells.forEach(function (cell) {
+      cells.forEach(function (cell, index) {
         rowData.push(cell.textContent);
+
+        // Jika sel merupakan kolom "risk", tambahkan nilai ke totalRisk
+        if (headerData[index] === "risk") {
+          totalRisk += parseFloat(cell.textContent) || 0;
+        }
       });
+
+      // Tambahkan nilai total risiko ke baris CSV
+      rowData.push(totalRisk);
+      totalRisk = 0; // Reset totalRisk untuk baris berikutnya
 
       // Gabungkan data menjadi baris CSV
       csvContent += rowData.join(",") + "\n";
@@ -184,8 +197,10 @@ function updateTable(
   closesetup,
   closeprice,
   closepip,
-  risk
+  risk,
+  equity
 ) {
+  console.log("tabless");
   var tableId = "tabel" + tablecounter;
   var table = document.getElementById(tableId);
 
@@ -209,6 +224,7 @@ function updateTable(
               <th>Close Price</th>
               <th>Close Pip</th>
               <th>Risk</th>
+              <th>Equity</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -245,6 +261,7 @@ function updateTable(
         <td>${closeprice}</td>
         <td>${closepip}</td>
         <td>${risk}%</td>
+        <td>${equity}</td>
       `;
 }
 async function loadCSV() {
@@ -314,6 +331,7 @@ async function dateLoop() {
     startToday = new Date(startTomorrow);
   }
 }
+var equity = 5000;
 
 function validateAndPlot(
   startToday,
@@ -647,8 +665,6 @@ function validateAndPlot(
 
     // Tampilkan chart untuk besok pada skala jam
     Plotly.newPlot("tomorrow", [tomorrowTrace], layoutTomorrow);
-
-    console.log(first_next);
     var sellstop = 0;
     var buystop = 0;
     var sell_stop = false;
@@ -860,7 +876,6 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Trail Stop";
-                break;
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
@@ -868,11 +883,18 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
               updateTable(
                 counter,
                 minute,
@@ -887,7 +909,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
             if (
@@ -949,11 +972,18 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Trail Stop";
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
               updateTable(
                 counter,
                 minute,
@@ -968,7 +998,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
           }
@@ -1215,8 +1246,12 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
-            var risk = parseFloat(closepip / hasilpip).toFixed(2);
-
+            if (hasilpip !== 0) {
+              risk = parseFloat(closepip / hasilpip).toFixed(2);
+            } else {
+              risk = 0; // or any other default value you want when hasilpip is 0
+            }
+            equity = parseFloat(equity * (risk / 100) + equity);
             updateTable(
               counter,
               minute,
@@ -1231,7 +1266,8 @@ function validateAndPlot(
               closesetup,
               closeprice,
               closepip,
-              risk
+              risk,
+              equity
             );
             break;
           }
@@ -1312,7 +1348,6 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Trail Stop";
-                break;
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
@@ -1320,11 +1355,18 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
               updateTable(
                 counter,
                 minute,
@@ -1339,7 +1381,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             } else if (
               (open_value >= stoploss ||
@@ -1400,12 +1443,18 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
               updateTable(
                 counter,
                 minute,
@@ -1420,7 +1469,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
           }
@@ -1659,8 +1709,13 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
-            var risk = parseFloat(closepip / hasilpip).toFixed(2);
+            if (hasilpip !== 0) {
+              risk = parseFloat(closepip / hasilpip).toFixed(2);
+            } else {
+              risk = 0; // or any other default value you want when hasilpip is 0
+            }
 
+            equity = parseFloat(equity * (risk / 100) + equity);
             updateTable(
               counter,
               minute,
@@ -1675,7 +1730,8 @@ function validateAndPlot(
               closesetup,
               closeprice,
               closepip,
-              risk
+              risk,
+              equity
             );
             break;
           }
@@ -1732,7 +1788,6 @@ function validateAndPlot(
                   simulasi(hasil);
                   simulasi(counter);
                   var closesetup = "Stop Loss";
-                  break;
                 } else if (
                   bep &&
                   (!tp1b || !tp2b || !tp3b || !tp4b || !tp5b || !tp6b)
@@ -1760,7 +1815,6 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Trail Stop";
-                break;
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
@@ -1768,12 +1822,19 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+
               updateTable(
                 counter,
                 minute,
@@ -1788,7 +1849,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             } else if (
               (open_value >= stoploss ||
@@ -1815,8 +1877,6 @@ function validateAndPlot(
                   simulasi(hasil);
                   simulasi(counter);
                   var closesetup = "Stop Loss";
-
-                  break;
                 } else if (
                   bep &&
                   (!tp1s || !tp2s || !tp3s || !tp4s || !tp5s || !tp6s)
@@ -1851,12 +1911,19 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+
               updateTable(
                 counter,
                 minute,
@@ -1871,7 +1938,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
           }
@@ -2104,8 +2172,13 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
-            var risk = parseFloat(closepip / hasilpip).toFixed(2);
+            if (hasilpip !== 0) {
+              risk = parseFloat(closepip / hasilpip).toFixed(2);
+            } else {
+              risk = 0; // or any other default value you want when hasilpip is 0
+            }
 
+            equity = parseFloat(equity * (risk / 100) + equity);
             updateTable(
               counter,
               minute,
@@ -2120,7 +2193,8 @@ function validateAndPlot(
               closesetup,
               closeprice,
               closepip,
-              risk
+              risk,
+              equity
             );
             break;
           }
@@ -2203,7 +2277,6 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Trail Stop";
-                break;
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
@@ -2211,12 +2284,20 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-                break;
               }
               buy = false;
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+
               updateTable(
                 counter,
                 minute,
@@ -2231,7 +2312,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
             if (
@@ -2294,11 +2376,19 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+
               updateTable(
                 counter,
                 minute,
@@ -2313,7 +2403,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
           }
@@ -2558,8 +2649,13 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
-            var risk = parseFloat(closepip / hasilpip).toFixed(2);
+            if (hasilpip !== 0) {
+              risk = parseFloat(closepip / hasilpip).toFixed(2);
+            } else {
+              risk = 0; // or any other default value you want when hasilpip is 0
+            }
 
+            equity = parseFloat(equity * (risk / 100) + equity);
             updateTable(
               counter,
               minute,
@@ -2574,7 +2670,8 @@ function validateAndPlot(
               closesetup,
               closeprice,
               closepip,
-              risk
+              risk,
+              equity
             );
             break;
           }
@@ -2656,7 +2753,6 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Trail Stop";
-                break;
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
@@ -2664,12 +2760,19 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+
               updateTable(
                 counter,
                 minute,
@@ -2684,7 +2787,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
             if (
@@ -2712,8 +2816,6 @@ function validateAndPlot(
                   simulasi(hasil);
                   simulasi(counter);
                   var closesetup = "Stop Loss";
-
-                  break;
                 } else if (
                   bep &&
                   (!tp1s || !tp2s || !tp3s || !tp4s || !tp5s || !tp6s)
@@ -2748,29 +2850,34 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-
-                break;
               }
+              var closeprice = parseFloat(stoploss).toFixed(2);
+              var closepip = parseFloat(hasil).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else {
+                risk = 0; // or any other default value you want when hasilpip is 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+              updateTable(
+                counter,
+                minute,
+                highestHigh,
+                lowestLow,
+                trend,
+                setup,
+                order,
+                entry,
+                stoploss,
+                hasilpip,
+                closesetup,
+                closeprice,
+                closepip,
+                risk,
+                equity
+              );
             }
-            var closeprice = parseFloat(stoploss).toFixed(2);
-            var closepip = parseFloat(hasil).toFixed(2);
-            var risk = parseFloat(closepip / hasilpip).toFixed(2);
-            updateTable(
-              counter,
-              minute,
-              highestHigh,
-              lowestLow,
-              trend,
-              setup,
-              order,
-              entry,
-              stoploss,
-              hasilpip,
-              closesetup,
-              closeprice,
-              closepip,
-              risk
-            );
           }
 
           if (b1d >= open_value && open_value >= b1c) {
@@ -3007,8 +3114,13 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
-            var risk = parseFloat(closepip / hasilpip).toFixed(2);
+            if (hasilpip !== 0) {
+              risk = parseFloat(closepip / hasilpip).toFixed(2);
+            } else {
+              risk = 0; // or any other default value you want when hasilpip is 0
+            }
 
+            equity = parseFloat(equity * (risk / 100) + equity);
             updateTable(
               counter,
               minute,
@@ -3023,7 +3135,8 @@ function validateAndPlot(
               closesetup,
               closeprice,
               closepip,
-              risk
+              risk,
+              equity
             );
             break;
           }
@@ -3080,7 +3193,6 @@ function validateAndPlot(
                   simulasi(hasil);
                   simulasi(counter);
                   var closesetup = "Stop Loss";
-                  break;
                 } else if (
                   bep &&
                   (!tp1b || !tp2b || !tp3b || !tp4b || !tp5b || !tp6b)
@@ -3108,7 +3220,6 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Trail Stop";
-                break;
               } else {
                 stop_loss = true;
                 simulasi(`STOP LOSS : ${stoploss}`);
@@ -3116,12 +3227,19 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+
               updateTable(
                 counter,
                 minute,
@@ -3136,7 +3254,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             } else if (
               (open_value >= stoploss ||
@@ -3163,8 +3282,6 @@ function validateAndPlot(
                   simulasi(hasil);
                   simulasi(counter);
                   var closesetup = "Stop Loss";
-
-                  break;
                 } else if (
                   bep &&
                   (!tp1s || !tp2s || !tp3s || !tp4s || !tp5s || !tp6s)
@@ -3199,12 +3316,19 @@ function validateAndPlot(
                 simulasi(hasil);
                 simulasi(counter);
                 var closesetup = "Stop Loss";
-
-                break;
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
-              var risk = parseFloat(closepip / hasilpip).toFixed(2);
+              if (hasilpip !== 0) {
+                risk = parseFloat(closepip / hasilpip).toFixed(2);
+              } else if (closepip !== 0) {
+                risk = Infinity; // or any other default value you prefer when hasilpip is 0 but closepip is not 0
+              } else {
+                risk = 0; // or any other default value you prefer when both closepip and hasilpip are 0
+              }
+
+              equity = parseFloat(equity * (risk / 100) + equity);
+
               updateTable(
                 counter,
                 minute,
@@ -3219,7 +3343,8 @@ function validateAndPlot(
                 closesetup,
                 closeprice,
                 closepip,
-                risk
+                risk,
+                equity
               );
             }
           }
@@ -3456,8 +3581,22 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
-            var risk = parseFloat(closepip / hasilpip).toFixed(2);
-
+            if (!buy && !sell) {
+              order = 0;
+              entry = 0;
+              stoploss = 0;
+              hasilpip = 0;
+              closesetup = "";
+              closeprice = 0;
+              closepip = 0;
+              risk = 0;
+            }
+            if (hasilpip !== 0) {
+              risk = parseFloat(closepip / hasilpip).toFixed(2);
+            } else {
+              risk = 0; // or any other default value you want when hasilpip is 0
+            }
+            equity = parseFloat(equity * (risk / 100) + equity);
             updateTable(
               counter,
               minute,
@@ -3472,13 +3611,15 @@ function validateAndPlot(
               closesetup,
               closeprice,
               closepip,
-              risk
+              risk,
+              equity
             );
             break;
           }
         }
       }
     }
+    console.log(`equity = ${equity}`);
   });
   tablecounter++;
 }
