@@ -265,7 +265,7 @@ function updateTable(
       `;
 }
 async function loadCSV() {
-  const response = await fetch("2021f.csv"); // Replace with your CSV file path
+  const response = await fetch("gasjadi.csv"); // Replace with your CSV file path
   const text = await response.text();
   const rows = text.split("\n").map((row) => row.split(","));
   return rows;
@@ -331,8 +331,7 @@ async function dateLoop() {
     startToday = new Date(startTomorrow);
   }
 }
-var equity = 5000;
-
+var equity = 5791.6820862136165;
 function validateAndPlot(
   startToday,
   startTomorrow,
