@@ -1246,6 +1246,16 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
+            if (counter < 1) {
+              order = 0;
+              entry = 0;
+              stoploss = 0;
+              hasilpip = 0;
+              closesetup = "";
+              closeprice = 0;
+              closepip = 0;
+              risk = 0;
+            }
             if (hasilpip !== 0) {
               risk = parseFloat(closepip / hasilpip).toFixed(2);
             } else {
@@ -1708,6 +1718,16 @@ function validateAndPlot(
               var closesetup = "Jam 11";
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
+            }
+            if (counter < 1) {
+              order = 0;
+              entry = 0;
+              stoploss = 0;
+              hasilpip = 0;
+              closesetup = "";
+              closeprice = 0;
+              closepip = 0;
+              risk = 0;
             }
             if (hasilpip !== 0) {
               risk = parseFloat(closepip / hasilpip).toFixed(2);
@@ -2172,6 +2192,16 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
+            if (counter < 1) {
+              order = 0;
+              entry = 0;
+              stoploss = 0;
+              hasilpip = 0;
+              closesetup = "";
+              closeprice = 0;
+              closepip = 0;
+              risk = 0;
+            }
             if (hasilpip !== 0) {
               risk = parseFloat(closepip / hasilpip).toFixed(2);
             } else {
@@ -2326,7 +2356,7 @@ function validateAndPlot(
               if (counter < 5) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
-                  simulasi(`TRAIL STOP : ${stoploss}`);
+                  simulasi(`TRAIL STOPs : ${stoploss}`);
                   sell_stop = false;
                   buy_stop = false;
                   hasil = parseFloat(sellstop - stoploss);
@@ -2414,11 +2444,11 @@ function validateAndPlot(
             (a1a >= low_value && low_value >= a1b)
           ) {
             if (!setopen) {
-              sellstop = a1b;
+              sellstop = parseFloat(a1b).toFixed(2);
               console.log(`SELL STOP : ${sellstop}`);
               simulasi(`SELL STOP : ${sellstop}`);
               sell_stop = true;
-              buystop = a1a;
+              buystop = parseFloat(a1a).toFixed(2);
               console.log(`BUY STOP : ${buystop}`);
               simulasi(`BUY STOP : ${buystop}`);
               buy_stop = true;
@@ -2598,19 +2628,19 @@ function validateAndPlot(
                 tp1s = true;
               }
               if (tp7s) {
-                stoploss = a1btp5;
+                stoploss = parseFloat(a1btp5).toFixed(2);
               } else if (tp6s) {
-                stoploss = a1btp4;
+                stoploss = parseFloat(a1btp4).toFixed(2);
               } else if (tp5s) {
-                stoploss = a1btp3;
+                stoploss = parseFloat(a1btp3).toFixed(2);
               } else if (tp4s) {
-                stoploss = a1btp2;
+                stoploss = parseFloat(a1btp2).toFixed(2);
               } else if (tp3s) {
-                stoploss = a1btp1;
+                stoploss = parseFloat(a1btp1).toFixed(2);
               } else if (tp2s) {
-                stoploss = a1btp;
+                stoploss = parseFloat(a1btp).toFixed(2);
               } else if (tp1s) {
-                stoploss = a1btp;
+                stoploss = parseFloat(a1btp).toFixed(2);
               }
             } else if (
               (open_value <= fibo0 ||
@@ -2648,6 +2678,16 @@ function validateAndPlot(
               var closesetup = "Jam 11";
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
+            }
+            if (counter < 1) {
+              order = 0;
+              entry = 0;
+              stoploss = 0;
+              hasilpip = 0;
+              closesetup = "";
+              closeprice = 0;
+              closepip = 0;
+              risk = 0;
             }
             if (hasilpip !== 0) {
               risk = parseFloat(closepip / hasilpip).toFixed(2);
@@ -2763,6 +2803,7 @@ function validateAndPlot(
               }
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
+
               if (hasilpip !== 0) {
                 risk = parseFloat(closepip / hasilpip).toFixed(2);
               } else if (closepip !== 0) {
@@ -3113,6 +3154,16 @@ function validateAndPlot(
               var closesetup = "Jam 11";
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
+            }
+            if (counter < 1) {
+              order = 0;
+              entry = 0;
+              stoploss = 0;
+              hasilpip = 0;
+              closesetup = "";
+              closeprice = 0;
+              closepip = 0;
+              risk = 0;
             }
             if (hasilpip !== 0) {
               risk = parseFloat(closepip / hasilpip).toFixed(2);
@@ -3581,7 +3632,7 @@ function validateAndPlot(
               var closepip = parseFloat(hasil).toFixed(2);
               // break;
             }
-            if (!buy && !sell) {
+            if (counter < 1) {
               order = 0;
               entry = 0;
               stoploss = 0;
