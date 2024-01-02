@@ -2131,7 +2131,7 @@ function validateAndPlot(
         if (fibo61 >= first_next && first_next >= fibo23) {
           // addParagraphToAnalisa(`OPEN A`);
           var setup = "A";
-          selisihbep = fibo23 - fibo0;
+          selisihbep = parseFloat(fibo23 - fibo0).toFixed(2);
           tssell = parseFloat(fibo0 - selisihbep).toFixed(2);
           a1a = parseFloat(fibo50 + keypip + sphread).toFixed(2);
           a1atp = tsbuy - keypip;
@@ -2150,7 +2150,7 @@ function validateAndPlot(
           a1btp5 = a1btp4 - trail;
           a1btp6 = a1btp5 - trail;
           selisihts = parseFloat(a1b - tssell).toFixed(2);
-          tsbuy = fibo100 + selisihbep;
+          tsbuy = parseFloat(fibo100 + selisihbep).toFixed(2);
           if (!stop_loss) {
             if (
               (open_value <= stoploss ||
@@ -2213,6 +2213,7 @@ function validateAndPlot(
                 var closesetup = "Stop Loss";
                 break;
               }
+              buy = false;
               var closeprice = parseFloat(stoploss).toFixed(2);
               var closepip = parseFloat(hasil).toFixed(2);
               var risk = parseFloat(closepip / hasilpip).toFixed(2);
@@ -2239,6 +2240,7 @@ function validateAndPlot(
                 high_value >= stoploss) &&
               sell
             ) {
+              sell = false;
               if (counter < 5) {
                 if (tp1s || tp2s || tp3s || tp4s || tp5s || tp6s) {
                   stop_loss = true;
@@ -2381,153 +2383,152 @@ function validateAndPlot(
                 }
               }
             }
-            if (buy) {
+          }
+          if (buy) {
+            if (
+              open_value >= tsbuy ||
+              low_value >= tsbuy ||
+              high_value >= tsbuy
+            ) {
               if (
-                open_value >= tsbuy ||
-                low_value >= tsbuy ||
-                high_value >= tsbuy
+                open_value >= a1atp6 ||
+                low_value >= a1atp6 ||
+                high_value >= a1atp6
               ) {
-                if (
-                  open_value >= a1atp6 ||
-                  low_value >= a1atp6 ||
-                  high_value >= a1atp6
-                ) {
-                  tp7b = true;
-                } else if (
-                  open_value >= a1atp5 ||
-                  low_value >= a1atp5 ||
-                  high_value >= a1atp5
-                ) {
-                  tp6b = true;
-                } else if (
-                  open_value >= a1atp4 ||
-                  low_value >= a1atp4 ||
-                  high_value >= a1atp4
-                ) {
-                  tp5b = true;
-                } else if (
-                  open_value >= a1atp3 ||
-                  low_value >= a1atp3 ||
-                  high_value >= a1atp3
-                ) {
-                  tp4b = true;
-                } else if (
-                  open_value >= a1atp2 ||
-                  low_value >= a1atp2 ||
-                  high_value >= a1atp2
-                ) {
-                  tp3b = true;
-                } else if (
-                  open_value >= a1atp1 ||
-                  low_value >= a1atp1 ||
-                  high_value >= a1atp1
-                ) {
-                  tp2b = true;
-                } else if (
-                  open_value >= a1atp ||
-                  low_value >= a1atp ||
-                  high_value >= a1atp
-                ) {
-                  tp1b = true;
-                }
-                if (tp7b) {
-                  stoploss = a1atp5;
-                } else if (tp6b) {
-                  stoploss = a1atp4;
-                } else if (tp5b) {
-                  stoploss = a1atp3;
-                } else if (tp4b) {
-                  stoploss = a1atp2;
-                } else if (tp3b) {
-                  stoploss = a1atp1;
-                } else if (tp2b) {
-                  stoploss = a1atp;
-                } else if (tp1b) {
-                  stoploss = a1atp;
-                }
-              }
-              if (
-                (open_value >= fibo100 ||
-                  low_value >= fibo100 ||
-                  high_value >= fibo100) &&
-                !bep
-              ) {
-                bep = true;
-                stoploss = buystop;
-              }
-            } else if (sell) {
-              if (
-                open_value <= tssell ||
-                low_value <= tssell ||
-                high_value <= tssell
-              ) {
-                if (
-                  open_value <= a1btp6 ||
-                  low_value <= a1btp6 ||
-                  high_value <= a1btp6
-                ) {
-                  tp7s = true;
-                } else if (
-                  open_value <= a1btp5 ||
-                  low_value <= a1btp5 ||
-                  high_value <= a1btp5
-                ) {
-                  tp6s = true;
-                } else if (
-                  open_value <= a1btp4 ||
-                  low_value <= a1btp4 ||
-                  high_value <= a1btp4
-                ) {
-                  tp5s = true;
-                } else if (
-                  open_value <= a1btp3 ||
-                  low_value <= a1btp3 ||
-                  high_value <= a1btp3
-                ) {
-                  tp4s = true;
-                } else if (
-                  open_value <= a1btp2 ||
-                  low_value <= a1btp2 ||
-                  high_value <= a1btp2
-                ) {
-                  tp3s = true;
-                } else if (
-                  open_value <= a1btp1 ||
-                  low_value <= a1btp1 ||
-                  high_value <= a1btp1
-                ) {
-                  tp2s = true;
-                } else if (
-                  open_value <= a1btp ||
-                  low_value <= a1btp ||
-                  high_value <= a1btp
-                ) {
-                  tp1s = true;
-                }
-                if (tp7s) {
-                  stoploss = a1btp5;
-                } else if (tp6s) {
-                  stoploss = a1btp4;
-                } else if (tp5s) {
-                  stoploss = a1btp3;
-                } else if (tp4s) {
-                  stoploss = a1btp2;
-                } else if (tp3s) {
-                  stoploss = a1btp1;
-                } else if (tp2s) {
-                  stoploss = a1btp;
-                } else if (tp1s) {
-                  stoploss = a1btp;
-                }
+                tp7b = true;
               } else if (
-                (open_value <= fibo0 ||
-                  low_value <= fibo0 ||
-                  high_value <= fibo0) &&
-                !bep
+                open_value >= a1atp5 ||
+                low_value >= a1atp5 ||
+                high_value >= a1atp5
               ) {
-                bep = true;
-                stoploss = sellstop;
+                tp6b = true;
+              } else if (
+                open_value >= a1atp4 ||
+                low_value >= a1atp4 ||
+                high_value >= a1atp4
+              ) {
+                tp5b = true;
+              } else if (
+                open_value >= a1atp3 ||
+                low_value >= a1atp3 ||
+                high_value >= a1atp3
+              ) {
+                tp4b = true;
+              } else if (
+                open_value >= a1atp2 ||
+                low_value >= a1atp2 ||
+                high_value >= a1atp2
+              ) {
+                tp3b = true;
+              } else if (
+                open_value >= a1atp1 ||
+                low_value >= a1atp1 ||
+                high_value >= a1atp1
+              ) {
+                tp2b = true;
+              } else if (
+                open_value >= a1atp ||
+                low_value >= a1atp ||
+                high_value >= a1atp
+              ) {
+                tp1b = true;
               }
+              if (tp7b) {
+                stoploss = a1atp5;
+              } else if (tp6b) {
+                stoploss = a1atp4;
+              } else if (tp5b) {
+                stoploss = a1atp3;
+              } else if (tp4b) {
+                stoploss = a1atp2;
+              } else if (tp3b) {
+                stoploss = a1atp1;
+              } else if (tp2b) {
+                stoploss = a1atp;
+              } else if (tp1b) {
+                stoploss = a1atp;
+              }
+            } else if (
+              (open_value >= fibo100 ||
+                low_value >= fibo100 ||
+                high_value >= fibo100) &&
+              !bep
+            ) {
+              bep = true;
+              stoploss = buystop;
+            }
+          } else if (sell) {
+            if (
+              open_value <= tssell ||
+              low_value <= tssell ||
+              high_value <= tssell
+            ) {
+              if (
+                open_value <= a1btp6 ||
+                low_value <= a1btp6 ||
+                high_value <= a1btp6
+              ) {
+                tp7s = true;
+              } else if (
+                open_value <= a1btp5 ||
+                low_value <= a1btp5 ||
+                high_value <= a1btp5
+              ) {
+                tp6s = true;
+              } else if (
+                open_value <= a1btp4 ||
+                low_value <= a1btp4 ||
+                high_value <= a1btp4
+              ) {
+                tp5s = true;
+              } else if (
+                open_value <= a1btp3 ||
+                low_value <= a1btp3 ||
+                high_value <= a1btp3
+              ) {
+                tp4s = true;
+              } else if (
+                open_value <= a1btp2 ||
+                low_value <= a1btp2 ||
+                high_value <= a1btp2
+              ) {
+                tp3s = true;
+              } else if (
+                open_value <= a1btp1 ||
+                low_value <= a1btp1 ||
+                high_value <= a1btp1
+              ) {
+                tp2s = true;
+              } else if (
+                open_value <= a1btp ||
+                low_value <= a1btp ||
+                high_value <= a1btp
+              ) {
+                tp1s = true;
+              }
+              if (tp7s) {
+                stoploss = a1btp5;
+              } else if (tp6s) {
+                stoploss = a1btp4;
+              } else if (tp5s) {
+                stoploss = a1btp3;
+              } else if (tp4s) {
+                stoploss = a1btp2;
+              } else if (tp3s) {
+                stoploss = a1btp1;
+              } else if (tp2s) {
+                stoploss = a1btp;
+              } else if (tp1s) {
+                stoploss = a1btp;
+              }
+            } else if (
+              (open_value <= fibo0 ||
+                low_value <= fibo0 ||
+                high_value <= fibo0) &&
+              !bep
+            ) {
+              bep = true;
+              stoploss = sellstop;
             }
           }
           if (minute.getHours() >= enambelas.getHours()) {
