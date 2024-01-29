@@ -212,7 +212,7 @@ function updateTable(
       `;
 }
 async function loadCSV() {
-  const response = await fetch("2021-2022.csv"); // Replace with your CSV file path
+  const response = await fetch("2021f.csv"); // Replace with your CSV file path
   const text = await response.text();
   const rows = text.split("\n").map((row) => row.split(","));
   return rows;
@@ -311,7 +311,7 @@ function validateAndPlot(
   simulasi(`inverse = ${invers}`);
 
   // Ambil data dari CSV
-  Plotly.d3.csv("2021-2022.csv", function (data) {
+  Plotly.d3.csv("2021f.csv", function (data) {
     // Konversi tanggal ke format yang benar
     data.forEach(function (d) {
       d.Date = new Date(d.Date);
